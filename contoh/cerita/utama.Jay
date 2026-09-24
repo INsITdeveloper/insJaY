@@ -1,0 +1,18 @@
+# Bab 1: Menyambung Dua Cerita
+
+aku menyambung cerita dari "tokoh.Jay".
+
+# Bab 2: Membaca Tokoh dari Cerita Lain
+
+aku berkata: wadah nama + " tinggal di " + wadah kota + ".".
+aku berkata: "Usia " + wadah nama + " sekarang " + wadah umur + " tahun.".
+
+jika wadah umur lebih besar atau sama dengan 18 maka
+    aku berkata: wadah nama + " sudah cukup umur untuk memilih.".
+kalau tidak
+    aku berkata: wadah nama + " masih di bawah umur.".
+selesai.
+
+# Bab 3: Penutup
+
+aku berkata: "Dua cerita ini nyambung dengan rapi.".

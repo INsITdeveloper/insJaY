@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Bytecode insJaY hasil kompilasi
+*.Jayc
+
+# Node (target web, opsional)
+node_modules/
+package-lock.json
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

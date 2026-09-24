@@ -1,0 +1,27 @@
+# Bab 1: Resep Pertambahan
+
+aku membuat kebiasaan bernama tambah yang menerima a, b
+    aku mengembalikan wadah a + wadah b.
+selesai.
+
+# Bab 2: Resep Perpangkatan Sederhana
+
+aku membuat kebiasaan bernama kuadrat yang menerima x
+    aku mengembalikan wadah x * wadah x.
+selesai.
+
+# Bab 3: Mencoba Resep
+
+aku menyiapkan wadah bernama hasil yang berisi hasil dari kebiasaan tambah dengan 7, 5.
+aku berkata: "Tujuh ditambah lima adalah " + wadah hasil.
+
+aku menyiapkan wadah bernama kuadratlima yang berisi hasil dari kebiasaan kuadrat dengan 5.
+aku berkata: "Lima pangkat dua adalah " + wadah kuadratlima.
+
+# Bab 4: Memanggil Tanpa Menyimpan
+
+aku memanggil kebiasaan kuadrat dengan 9.
+
+# Bab 5: Penutup
+
+aku berkata: "Kalkulator ceritanya selesai.".

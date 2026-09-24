@@ -1,0 +1,21 @@
+# Bab 1: Sapaan Pertama
+
+aku menyiapkan wadah bernama salam yang berisi "Halo, dunia!".
+aku berkata: wadah salam.
+
+# Bab 2: Menyapa Seorang Kawan
+
+aku menyiapkan wadah bernama nama yang berisi "Ayu".
+aku menyiapkan wadah bernama umur yang berisi 17.
+
+aku berkata: wadah salam + " Namaku " + wadah nama + ".".
+
+jika wadah umur lebih besar dari 17 maka
+    aku berkata: "Aku sudah dewasa.".
+kalau tidak
+    aku berkata: "Aku masih muda.".
+selesai.
+
+# Bab 3: Penutup
+
+aku berkata: "Sampai jumpa di cerita berikutnya.".

@@ -1,0 +1,34 @@
+# Bab 1: Bot WhatsApp insJaY
+# Seluruh LOGIKA BALASAN ditulis penuh dengan bahasa insJaY.
+# Urusan kirim-terima pesan ke WhatsApp diurus oleh host.js (Node + Baileys).
+
+aku membuat kebiasaan bernama balas yang menerima pesan
+    aku menyiapkan wadah bernama teks yang berisi huruf kecil dari wadah pesan.
+
+    jika wadah teks mengandung "/halo" maka
+        aku mengembalikan "Halo juga! 👋 Aku bot insJaY.".
+    kalau tidak
+        jika wadah teks mengandung "/menu" maka
+            aku mengembalikan "Menu: /halo, /menu, /jam, /fitur, /pemilik".
+        kalau tidak
+            jika wadah teks mengandung "/jam" maka
+                aku mengembalikan "Cek jam di HP-mu ya 😄".
+            kalau tidak
+                jika wadah teks mengandung "/fitur" maka
+                    aku mengembalikan "Bot ini ditulis dengan bahasa insJaY, bukan JavaScript langsung.".
+                kalau tidak
+                    jika wadah teks mengandung "/pemilik" maka
+                        aku mengembalikan "Pemilik: INsITdeveloper.".
+                    kalau tidak
+                        aku mengembalikan "".
+                    selesai
+                selesai
+            selesai
+        selesai
+    selesai
+selesai
+
+# Bab 2: Menyerahkan Bot kepada Dunia
+# Host (Node) akan memanggil kebiasaan 'balas' ini untuk setiap pesan masuk.
+
+aku menyerahkan kebiasaan balas kepada dunia.

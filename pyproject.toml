@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "insjay"
+version = "0.5.0"
+description = "insJaY — bahasa pemrograman naratif Indonesia dengan compiler + runtime sendiri (bytecode + Mesin insJaY)."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "INsITdeveloper" }]
+keywords = ["insjay", "bahasa-indonesia", "compiler", "vm", "bytecode", "narrative-language"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: Indonesian",
+]
+
+[project.scripts]
+insjay = "insjayvm.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,26 @@
+# Bab 1: Menyiapkan Panggung
+
+aku menyiapkan halaman bernama utama berjudul "Kalkulator insJaY".
+aku menaruh judul "Kalkulator Sederhana" ke dalam halaman utama.
+aku menaruh paragraf "Isi dua angka, lalu tekan tombol Hitung." ke dalam halaman utama.
+aku menaruh kotak isian bernama angka1 ke dalam halaman utama.
+aku menaruh kotak isian bernama angka2 ke dalam halaman utama.
+aku menaruh jawaban "Hasil akan muncul di sini." ke dalam halaman utama.
+
+# Bab 2: Resep Menjumlah
+
+aku membuat kebiasaan bernama tambah yang menerima a, b
+    aku mengembalikan wadah a + wadah b.
+selesai.
+
+# Bab 3: Ketika Tombol Ditekan
+
+aku membuat kebiasaan bernama hitung
+    aku membaca kotak isian angka1 ke dalam wadah a.
+    aku membaca kotak isian angka2 ke dalam wadah b.
+    aku mengubah jawaban di halaman utama menjadi "Hasil: " + hasil dari kebiasaan tambah dengan angka dari wadah a, angka dari wadah b.
+selesai.
+
+# Bab 4: Menaruh Tombol
+
+aku menaruh tombol "Hitung" yang memanggil kebiasaan hitung ke dalam halaman utama.

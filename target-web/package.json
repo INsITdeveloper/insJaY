@@ -1,0 +1,30 @@
+{
+  "name": "insjay",
+  "version": "0.4.0",
+  "description": "insJaY — bahasa pemrograman naratif Indonesia (.Jay). Pipeline: Lexing -> Parsing -> AST -> Analisis Semantik -> Kompilasi ke JavaScript.",
+  "bin": {
+    "insjay": "bin/insjay.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "contoh",
+    "README.md"
+  ],
+  "scripts": {
+    "uji": "node uji/lari.js"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [
+    "insjay",
+    "bahasa-indonesia",
+    "compiler",
+    "transpiler",
+    "narrative-language",
+    "esolang"
+  ],
+  "license": "MIT",
+  "preferGlobal": true
+}

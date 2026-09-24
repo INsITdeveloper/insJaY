@@ -1,0 +1,32 @@
+# Bab 1: Menyiapkan Panggung
+
+aku menyiapkan wadah bernama angka yang berisi 1.
+
+# Bab 2: Pesta Angka dari Satu sampai Lima Belas
+
+selama wadah angka lebih kecil atau sama dengan 15, ulangi
+
+    aku menyiapkan wadah bernama pesan yang berisi "".
+
+    jika wadah angka % 15 sama dengan 0 maka
+        aku mengganti isi wadah pesan menjadi "FizzBuzz".
+    kalau tidak
+        jika wadah angka % 3 sama dengan 0 maka
+            aku mengganti isi wadah pesan menjadi "Fizz".
+        kalau tidak
+            jika wadah angka % 5 sama dengan 0 maka
+                aku mengganti isi wadah pesan menjadi "Buzz".
+            kalau tidak
+                aku mengganti isi wadah pesan menjadi wadah angka.
+            selesai.
+        selesai.
+    selesai.
+
+    aku berkata: wadah pesan.
+    aku menambahkan 1 ke dalam wadah angka.
+
+selesai.
+
+# Bab 3: Penutup
+
+aku berkata: "Pesta selesai.".

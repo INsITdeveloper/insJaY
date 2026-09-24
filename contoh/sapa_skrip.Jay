@@ -1,0 +1,26 @@
+# Bab 1: Menyambut Pengguna
+
+aku berkata: "=== Program Sapaan insJaY ===".
+aku bertanya: "Siapa namamu?" ke dalam wadah nama.
+aku bertanya: "Berapa umurmu?" ke dalam wadah umur.
+
+aku berkata: "Halo, " + wadah nama + "!".
+
+# Bab 2: Menilai Umur
+
+jika angka dari wadah umur lebih besar atau sama dengan 18 maka
+    aku berkata: "Kamu sudah dewasa.".
+kalau tidak
+    aku berkata: "Kamu masih muda.".
+selesai.
+
+# Bab 3: Menghitung Masa Depan
+
+aku menyiapkan wadah bernama menuju18 yang berisi 18 - angka dari wadah umur.
+jika wadah menuju18 lebih besar dari 0 maka
+    aku berkata: "Tunggu " + wadah menuju18 + " tahun lagi untuk dewasa.".
+kalau tidak
+    aku berkata: "Kamu sudah melewati usia dewasa.".
+selesai.
+
+aku berkata: "Terima kasih, " + wadah nama + "!".

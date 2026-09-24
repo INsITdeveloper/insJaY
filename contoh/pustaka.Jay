@@ -1,0 +1,22 @@
+# Bab 1: Memakai Pustaka Bawaan Mesin insJaY
+# Mesin insJaY punya pustaka sendiri, jadi tidak perlu npm/Node.
+
+aku menyiapkan wadah bernama angka yang berisi 81.
+aku berkata: "Akar dari 81 adalah " + hasil dari kebiasaan akar dengan wadah angka.
+
+aku menyiapkan wadah bernama dua yang berisi 2.
+aku menyiapkan wadah bernama sepuluh yang berisi 10.
+aku berkata: "Dua pangkat sepuluh adalah " + hasil dari kebiasaan pangkat dengan wadah dua, wadah sepuluh.
+
+aku menyiapkan wadah bernama pecahan yang berisi 3.7.
+aku berkata: "Dibulatkan menjadi " + hasil dari kebiasaan bulat dengan wadah pecahan.
+
+aku berkata: "Sekarang: " + hasil dari kebiasaan waktu_sekarang.
+
+# Bab 2: Menghitung Luas Lingkaran
+# (dibulatkan agar rapi)
+
+aku menyiapkan wadah bernama jarijari yang berisi 7.
+aku menyiapkan wadah bernama pi yang berisi 3.14159.
+aku menyiapkan wadah bernama luas yang berisi wadah pi * wadah jarijari * wadah jarijari.
+aku berkata: "Luas lingkaran berjari-jari 7 adalah " + hasil dari kebiasaan bulat dengan wadah luas.

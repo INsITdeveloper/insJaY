@@ -1,0 +1,18 @@
+# Bab 1: Menyiapkan Halaman Sapaan
+
+aku menyiapkan halaman bernama utama berjudul "Sapa Nama".
+aku menaruh judul "Aplikasi Sapaan" ke dalam halaman utama.
+aku menaruh paragraf "Tulis namamu, lalu tekan tombol Sapa." ke dalam halaman utama.
+aku menaruh kotak isian bernama nama ke dalam halaman utama.
+aku menaruh jawaban "Halo, siapa di sana?" ke dalam halaman utama.
+
+# Bab 2: Kebiasaan Menyapa
+
+aku membuat kebiasaan bernama sapa
+    aku membaca kotak isian nama ke dalam wadah nama.
+    aku mengubah jawaban di halaman utama menjadi "Halo, " + wadah nama + "! Selamat datang.".
+selesai.
+
+# Bab 3: Tombol Sapaan
+
+aku menaruh tombol "Sapa!" yang memanggil kebiasaan sapa ke dalam halaman utama.
