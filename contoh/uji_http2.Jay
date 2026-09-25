@@ -1,0 +1,27 @@
+# Bab 1: Uji HTTP POST (varian tanpa ubah source)
+
+aku menyiapkan wadah bernama url yang berisi "https://dracinku.site/api/drama/pinedrama/tabfeed?lang=id"
+
+aku menyiapkan peta bernama data yang berisi "has_more" = benar, "category_id" = "0", "scene" = 1, "cursor" = ""
+
+aku mengatur jeda permintaan menjadi 30 detik
+
+aku menyiapkan peta bernama kepala yang berisi "User-Agent" = "Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/120 Mobile Safari/537.36"
+aku mengatur kepala permintaan dari wadah kepala
+
+aku meminta post ke wadah url dengan isi wadah data ke dalam wadah hasil
+
+aku berkata: "Status: " + anggota "status" dari wadah hasil
+
+aku menyiapkan wadah bernama badan yang berisi anggota "teks" dari wadah hasil
+aku berkata: "Panjang respons: " + panjang dari wadah badan
+
+coba
+    aku mengurai json dari wadah badan ke dalam wadah terurai
+    aku berkata: "Jenis terurai: " + hasil dari kebiasaan jenis dengan wadah terurai
+    aku menyiapkan wadah bernama daftar yang berisi anggota dalam "data.book.list" dari wadah terurai
+    aku berkata: "Jenis daftar: " + hasil dari kebiasaan jenis dengan wadah daftar
+    aku berkata: "Banyak drama: " + panjang dari wadah daftar
+jika gagal
+    aku berkata: "Gagal: " + wadah galat
+selesai.

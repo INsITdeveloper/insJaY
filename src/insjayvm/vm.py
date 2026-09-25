@@ -1,5 +1,9 @@
+import base64
+import hashlib
 import json
 import math
+import os
+import platform
 import random
 import re
 import time
@@ -83,8 +87,46 @@ class Mesin:
             except Exception as e:
                 raise GalatInsJay("Permintaan HTTP gagal: %s" % e)
 
+        def baca_berkas(p):
+            try:
+                with open(ke_teks(p), "r", encoding="utf-8") as f:
+                    return f.read()
+            except OSError as e:
+                raise GalatInsJay("Gagal membaca berkas: %s" % e)
+
+        def tulis_berkas(p, isi, mode):
+            try:
+                with open(ke_teks(p), mode, encoding="utf-8") as f:
+                    f.write(ke_teks(isi))
+                return True
+            except OSError as e:
+                raise GalatInsJay("Gagal menulis berkas: %s" % e)
+
+        def hash_berkas(teks, algo):
+            h = hashlib.new(algo)
+            h.update(ke_teks(teks).encode("utf-8"))
+            return h.hexdigest()
+
         return {
             "akar": lambda a: math.sqrt(a[0]),
+            "baca_berkas": lambda a: baca_berkas(a[0]),
+            "tulis_berkas": lambda a: tulis_berkas(a[0], a[1], "w"),
+            "tambah_berkas": lambda a: tulis_berkas(a[0], a[1], "a"),
+            "ada_berkas": lambda a: os.path.isfile(ke_teks(a[0])),
+            "hapus_berkas": lambda a: _hapus(ke_teks(a[0])),
+            "daftar_berkas": lambda a: sorted(os.listdir(ke_teks(a[0]))),
+            "buat_folder": lambda a: _buat_folder(ke_teks(a[0])),
+            "ukuran_berkas": lambda a: os.path.getsize(ke_teks(a[0])),
+            "folder_kerja": lambda a: os.getcwd(),
+            "gabung_jalur": lambda a: os.path.join(*[ke_teks(x) for x in a]),
+            "hash_md5": lambda a: hash_berkas(a[0], "md5"),
+            "hash_sha1": lambda a: hash_berkas(a[0], "sha1"),
+            "hash_sha256": lambda a: hash_berkas(a[0], "sha256"),
+            "base64_susun": lambda a: base64.b64encode(ke_teks(a[0]).encode("utf-8")).decode("ascii"),
+            "base64_urai": lambda a: base64.b64decode(ke_teks(a[0])).decode("utf-8", "replace"),
+            "lingkungan": lambda a: os.environ.get(ke_teks(a[0]), ""),
+            "nama_sistem": lambda a: platform.system().lower(),
+            "versi_python": lambda a: platform.python_version(),
             "pangkat": lambda a: a[0] ** a[1],
             "bulat": lambda a: int(round(a[0])),
             "lantai": lambda a: math.floor(a[0]),
@@ -355,6 +397,22 @@ class Mesin:
         for i, p in enumerate(fn["params"]):
             lokal[p] = args[i] if i < len(args) else MISSING
         tumpukan.append({"kode": fn["kode"], "pc": 0, "lokal": lokal, "induk": self.global_})
+
+
+def _hapus(p):
+    try:
+        os.remove(p)
+        return True
+    except OSError:
+        return False
+
+
+def _buat_folder(p):
+    try:
+        os.makedirs(p, exist_ok=True)
+        return True
+    except OSError:
+        return False
 
 
 def ke_angka(v):

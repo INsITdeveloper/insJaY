@@ -119,5 +119,10 @@ uji("argumen CLI & kode keluar", kode == 2 and "Pakai:" in out)
 out, _, _ = insjay(["periksa", "contoh/scraper_contoh.Jay"])
 uji("scraper lolos analisis semantik", "ALUR CERITA OK" in out)
 
+out, _, _ = insjay(["contoh/runtime.Jay"])
+uji("runtime: berkas + kripto",
+    "Ditulis  : benar" in out and "SHA-256" in out and "Dihapus  : benar" in out
+    and "Ada?     : salah" in out)
+
 print("\nSelesai: %d lulus, %d gagal." % (lulus, gagal))
 sys.exit(1 if gagal else 0)

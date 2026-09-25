@@ -5,6 +5,12 @@ class Penganalisis:
         "cocok_pola": 2, "ganti_pola": 3, "cari_pola": 2, "gabung_peta": 2,
         "anggota": 2, "punya": 2, "jenis": 1, "tidur": 1,
         "http_get": 1, "http_post": 2,
+        "baca_berkas": 1, "tulis_berkas": 2, "tambah_berkas": 2, "ada_berkas": 1,
+        "hapus_berkas": 1, "daftar_berkas": 1, "buat_folder": 1, "ukuran_berkas": 1,
+        "folder_kerja": 0, "gabung_jalur": 2,
+        "hash_md5": 1, "hash_sha1": 1, "hash_sha256": 1,
+        "base64_susun": 1, "base64_urai": 1,
+        "lingkungan": 1, "nama_sistem": 0, "versi_python": 0,
     }
 
     def __init__(self):

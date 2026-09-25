@@ -1,0 +1,12 @@
+# Bab 1: Uji HTTP POST
+
+aku menyiapkan wadah bernama url yang berisi "https://dracinku.site/api/drama/pinedrama/tabfeed?lang=id"
+
+aku menyiapkan peta bernama data yang berisi "has_more": benar, "category_id": "0", "scene": 1, "cursor": ""
+
+aku mengatur jeda permintaan menjadi 30 detik
+
+aku meminta post ke wadah url dengan isi wadah data ke dalam wadah hasil
+
+aku berkata: "Status: " + anggota "status" dari wadah hasil
+aku berkata: "Response: " + anggota "teks" dari wadah hasil

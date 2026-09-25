@@ -73,6 +73,45 @@ Node.js. insJaY punya kompiler bytecode dan mesin virtual (VM) sendiri:
 
 ---
 
+## Runtime insJaY v1 — satu pasang, semua tersedia
+
+Seperti Node.js: setelah `insJay` terpasang, semua kebutuhan runtime sudah
+menempel di dalamnya. Pengguna **tidak** perlu memasang Python, Node.js, axios,
+maupun `requests` secara terpisah.
+
+```
+                        insJay (satu program)
+                                |
+        +-----------------------+-----------------------+
+        |                       |                       |
+   Compiler .Jay            Mesin (VM)            Pustaka bawaan
+        |                       |                       |
+     bytecode            +--------+--------+      +-------+-------+-------+
+                         |        |        |      |       |       |       |
+                       HTTP     JSON     Regex   Berkas  Kripto  Proses  Teks
+                         |        |        |      |       |       |       |
+                         +--------+--------+------+-------+-------+-------+
+                                          |
+                                     Sistem operasi
+```
+
+| Engine | Kalimat / kebiasaan | Status |
+|--------|---------------------|--------|
+| HTTP (GET/POST, header, timeout) | `aku meminta GET ...`, `aku meminta POST ...` | ada |
+| JSON | `aku mengurai JSON ...`, `aku menyusun JSON ...` | ada |
+| Regex | `cocok dengan pola`, `ganti_pola`, `cari_pola` | ada |
+| Berkas | `baca_berkas`, `tulis_berkas`, `tambah_berkas`, `ada_berkas`, `hapus_berkas`, `daftar_berkas`, `buat_folder`, `ukuran_berkas`, `folder_kerja`, `gabung_jalur` | ada |
+| Kripto | `hash_md5`, `hash_sha1`, `hash_sha256`, `base64_susun`, `base64_urai` | ada |
+| Proses / OS | `aku membaca argumen ...`, `aku mengakhiri ...`, `lingkungan`, `nama_sistem` | ada |
+| Teks & angka | `pangkas`, `ganti`, `pisah`, `gabung`, `angka dari wadah`, `teks dari wadah` | ada |
+| Matematika | `akar`, `pangkat`, `bulat`, `lantai`, `acak` | ada |
+| Masukan & jeda | `aku bertanya ...`, `aku menunggu ... milidetik`, `tidur` | ada |
+| Async/await sejati | (belum) | rencana v0.8 |
+
+Contoh lengkap semua engine: `contoh/runtime.Jay`.
+
+---
+
 ## Pemasangan
 
 Butuh **Python 3.8+**. Tidak ada dependensi pihak ketiga.
@@ -94,6 +133,25 @@ python3 -m insjayvm --help        # dengan PYTHONPATH=src
 # atau
 PYTHONPATH=src python3 -m insjayvm contoh/halo.Jay
 ```
+
+### Sekali perintah
+
+```sh
+sh install.sh          # memasang Python (bila belum ada) lalu insJay
+```
+
+### Program mandiri (tanpa Python sama sekali)
+
+Untuk pengguna akhir, sediakan satu berkas `insjay` hasil build:
+
+```bash
+pip install pyinstaller
+insjay buat-mandiri          # menghasilkan dist/insjay
+```
+
+Binary untuk Linux/macOS/Windows juga dibangun otomatis oleh GitHub Actions
+(`.github/workflows/bangun.yml`) setiap kali kamu menandai tag `v*`, lalu
+dilampirkan ke halaman *Releases*. Pengguna cukup mengunduh satu berkas itu.
 
 ### Butuh Python dulu?
 

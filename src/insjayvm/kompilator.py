@@ -1,6 +1,6 @@
 from .lexer import GalatInsJay, JENIS_WEB
 
-VERSI_BYTECODE = "0.6.0"
+VERSI_BYTECODE = "0.7.0"
 
 PESAN_WEB = (
     "Perintah 'halaman' hanya hidup di target web (cli-node), "

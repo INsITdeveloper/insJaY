@@ -1,0 +1,33 @@
+# Bab 1: Mengenal Sistem
+
+aku berkata: "Sistem   : " + hasil dari kebiasaan nama_sistem.
+aku berkata: "Folder   : " + hasil dari kebiasaan folder_kerja.
+aku berkata: "Versi    : " + hasil dari kebiasaan versi_python.
+
+# Bab 2: Berkas (filesystem)
+
+aku menyiapkan wadah bernama jalur yang berisi hasil dari kebiasaan gabung_jalur dengan "/tmp", "insjay_uji.txt".
+aku menyiapkan wadah bernama ditulis yang berisi hasil dari kebiasaan tulis_berkas dengan wadah jalur, "Halo dari insJaY".
+aku berkata: "Ditulis  : " + wadah ditulis.
+aku berkata: "Ada?     : " + hasil dari kebiasaan ada_berkas dengan wadah jalur.
+
+aku menyiapkan wadah bernama isi yang berisi hasil dari kebiasaan baca_berkas dengan wadah jalur.
+aku berkata: "Isi      : " + wadah isi.
+aku berkata: "Ukuran   : " + hasil dari kebiasaan ukuran_berkas dengan wadah jalur.
+
+aku menyiapkan wadah bernama ditambah yang berisi hasil dari kebiasaan tambah_berkas dengan wadah jalur, " + baris baru".
+aku berkata: "Tambah ok: " + wadah ditambah.
+aku menyiapkan wadah bernama isi2 yang berisi hasil dari kebiasaan baca_berkas dengan wadah jalur.
+aku berkata: "Setelah tambah: " + wadah isi2.
+
+# Bab 3: Kripto
+
+aku berkata: "SHA-256  : " + hasil dari kebiasaan hash_sha256 dengan wadah isi.
+aku berkata: "MD5      : " + hasil dari kebiasaan hash_md5 dengan wadah isi.
+aku berkata: "Base64   : " + hasil dari kebiasaan base64_susun dengan wadah isi.
+
+# Bab 4: Bersih-bersih
+
+aku menyiapkan wadah bernama dihapus yang berisi hasil dari kebiasaan hapus_berkas dengan wadah jalur.
+aku berkata: "Dihapus  : " + wadah dihapus.
+aku berkata: "Ada?     : " + hasil dari kebiasaan ada_berkas dengan wadah jalur.
