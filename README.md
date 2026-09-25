@@ -95,6 +95,21 @@ python3 -m insjayvm --help        # dengan PYTHONPATH=src
 PYTHONPATH=src python3 -m insjayvm contoh/halo.Jay
 ```
 
+### Butuh Python dulu?
+
+Ya — Mesin insJaY berjalan di atas Python 3. Supaya pengguna **tidak perlu
+memasang Python sendiri**, bisa dibuat versi mandiri (satu berkas program):
+
+```bash
+pip install pyinstaller
+insjay --buat-mandiri          # menghasilkan dist/insjay (satu berkas)
+# atau manual:
+pyinstaller --onefile --name insjay --paths src masuk.py
+```
+
+Satu berkas `dist/insjay` itu bisa dibagikan ke mesin lain (sistem yang sama).
+Untuk Android/Termux, cukup `pkg install python && pip install .` satu kali.
+
 ---
 
 ## Mulai Cepat
@@ -202,7 +217,82 @@ Tidak perlu memasang apa pun:
 aku berkata: "Akar dari 81 adalah " + hasil dari kebiasaan akar dengan 81.
 ```
 
-### 6. Contoh lengkap
+### 6. Struktur data, JSON, dan API
+
+**Deret (array) & himpunan (set)**
+
+| Maksud | Kalimat |
+|--------|---------|
+| Buat deret | `aku menyiapkan deret bernama buah yang berisi "apel", "mangga"` |
+| Deret kosong | `aku menyiapkan deret bernama kosong` |
+| Tambah item | `aku menambahkan "pisang" ke dalam deret buah` |
+| Ambil item ke-N | `benda ke-1 dari wadah buah` |
+| Ubah item ke-N | `aku mengubah benda ke-1 dari deret buah menjadi "anggur"` |
+| Buat himpunan | `aku menyiapkan himpunan bernama terlihat` |
+| Tambah ke himpunan | `aku menambahkan "x" ke dalam himpunan terlihat` |
+
+**Peta (object)**
+
+| Maksud | Kalimat |
+|--------|---------|
+| Buat peta | `aku menyiapkan peta bernama data yang berisi nama = "Kaisar", umur = 21` |
+| Ambil properti | `anggota "nama" dari wadah data` |
+| Ambil jalur aman | `anggota dalam "book.list" dari wadah data` |
+| Ubah properti | `aku mengubah anggota "umur" dari peta data menjadi 22` |
+| Cek properti | `jika wadah data memiliki "umur" maka` |
+| Gabung peta | `hasil dari kebiasaan gabung_peta dengan wadah a, wadah b` |
+
+**JSON**
+
+| Maksud | Kalimat |
+|--------|---------|
+| Urai JSON | `aku mengurai JSON dari wadah teks ke dalam wadah data` |
+| Susun JSON | `aku menyusun JSON dari wadah data ke dalam wadah teks` |
+
+**HTTP**
+
+| Maksud | Kalimat |
+|--------|---------|
+| GET | `aku meminta GET dari "https://situs/api" ke dalam wadah balasan` |
+| GET (URL variabel) | `aku meminta GET dari wadah url ke dalam wadah balasan` |
+| POST berisi JSON | `aku meminta POST ke "https://situs/api" dengan isi wadah data ke dalam wadah balasan` |
+| Atur kepala (header) | `aku mengatur kepala permintaan dari wadah kepala` |
+| Atur jeda (timeout) | `aku mengatur jeda permintaan menjadi 15 detik` |
+
+`wadah balasan` berisi peta: `anggota "status"` (kode HTTP),
+`anggota "ok"` (benar/salah), `anggota "teks"` (isi balasan).
+
+**Loop baru**
+
+| Maksud | Kalimat |
+|--------|---------|
+| Untuk setiap item | `untuk setiap item dalam deret buah, ulangi` … `selesai` |
+| Untuk rentang angka | `untuk setiap angka dari 1 sampai 40, ulangi` … `selesai` |
+
+**Teks, pola, dan tipe**
+
+| Maksud | Kalimat / ungkapan |
+|--------|--------------------|
+| Rapikan spasi | `hasil dari kebiasaan pangkas dengan wadah x` |
+| Ganti teks | `hasil dari kebiasaan ganti dengan wadah x, "a", "b"` |
+| Pisah / gabung | `hasil dari kebiasaan pisah dengan wadah x, ","` · `hasil dari kebiasaan gabung dengan wadah d, ","` |
+| Cocok pola (regex) | `jika wadah x cocok dengan pola "[0-9]+" maka` |
+| Ganti pola (regex) | `hasil dari kebiasaan ganti_pola dengan wadah x, "[^A-Za-z ]", ""` |
+| Cari pola | `hasil dari kebiasaan cari_pola dengan wadah x, "[0-9]+"` |
+| Uji tipe | `wadah x adalah deret` / `adalah peta` / `adalah teks` / `adalah angka` / `adalah himpunan` / `adalah kosong` |
+| Teks <-> angka | `teks dari wadah x` · `angka dari wadah x` |
+
+**Galat, argumen, keluar, tunggu**
+
+| Maksud | Kalimat |
+|--------|---------|
+| Tangkap galat | `coba` … `jika gagal` … `selesai` (pesan tersedia di `wadah galat`) |
+| Argumen terminal | `aku membaca argumen ke dalam wadah masuk` |
+| Keluar | `aku mengakhiri dengan kode 2` |
+| Jeda | `aku menunggu 200 milidetik` |
+| Nilai bawaan | `aku membuat kebiasaan bernama f yang menerima a, b = 10` |
+
+### 7. Contoh lengkap
 
 ```
 # Bab 1: Resep Pertambahan

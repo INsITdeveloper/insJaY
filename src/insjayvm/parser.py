@@ -112,6 +112,18 @@ class ParserUngkapan:
         if jenis == "hurufbesar":
             self.next()
             return {"t": "HurufBesar", "nama": tok[1]}
+        if jenis == "keteks":
+            self.next()
+            return {"t": "KeTeks", "nama": tok[1]}
+        if jenis == "peta":
+            self.next()
+            return {"t": "AnggotaPeta", "nama": tok[1], "kunci": tok[2]}
+        if jenis == "deret":
+            self.next()
+            return {"t": "AnggotaDeret", "nama": tok[1], "indeks": tok[2]}
+        if jenis == "jalur":
+            self.next()
+            return {"t": "AnggotaJalur", "nama": tok[1], "jalur": tok[2]}
         if jenis == "lp":
             self.next()
             d = self.atau()
@@ -148,6 +160,21 @@ def parse_kondisi(teks, berkas=None):
     s = teks.strip()
     if s[:6].lower() == "tidak ":
         return {"t": "Tidak", "anak": parse_kondisi(s[6:], berkas)}
+    for frasa, nodeT in (("cocok dengan pola", "CocokPola"), ("memiliki", "Memiliki"), ("memuat", "Memuat")):
+        idx_khusus = find_top_level(s, frasa)
+        if idx_khusus != -1:
+            return {
+                "t": nodeT,
+                "kiri": parse_ungkapan(s[:idx_khusus], berkas),
+                "kanan": parse_ungkapan(s[idx_khusus + len(frasa):], berkas),
+            }
+    idx_adalah = find_top_level(s, "adalah")
+    if idx_adalah != -1:
+        return {
+            "t": "Adalah",
+            "kiri": parse_ungkapan(s[:idx_adalah], berkas),
+            "jenis": s[idx_adalah + len("adalah"):].strip().lower(),
+        }
     idx = find_top_level(s, "mengandung")
     if idx != -1:
         return {
@@ -239,12 +266,23 @@ class Parser:
             return dict(dasar, t="Selama", kondisi=kondisi, tubuh=tubuh)
         if jenis == "KEBIASAAN":
             nama = g[0]
-            params = [p.strip() for p in pisah_argumen(g[1]) if p.strip()] if g[1] else []
+            params, bawaan = [], []
+            for p in (pisah_argumen(g[1]) if g[1] else []):
+                p = p.strip()
+                if not p:
+                    continue
+                if "=" in p:
+                    nm, nilai = p.split("=", 1)
+                    params.append(nm.strip())
+                    bawaan.append(parse_ungkapan(nilai.strip(), tok["berkas"]))
+                else:
+                    params.append(p)
+                    bawaan.append(None)
             tubuh = self.blok(("SELESAI",))
             if not self.peek() or self.peek()["jenis"] != "SELESAI":
                 self.galat("Kebiasaan '%s' belum ditutup dengan 'selesai'." % nama, tok)
             self.i += 1
-            return dict(dasar, t="Kebiasaan", nama=nama, params=params, tubuh=tubuh)
+            return dict(dasar, t="Kebiasaan", nama=nama, params=params, bawaan=bawaan, tubuh=tubuh)
         if jenis == "PANGGIL":
             args = [parse_ungkapan(a, tok["berkas"]) for a in pisah_argumen(g[1])] if g[1] else []
             return dict(dasar, t="Panggil", nama=g[0], args=args)
@@ -268,6 +306,74 @@ class Parser:
             return dict(dasar, t="GantiJawaban", target=g[0], nilai=parse_ungkapan(g[1], tok["berkas"]))
         if jenis == "BACA_ISIAN":
             return dict(dasar, t="BacaIsian", nama=g[0], sasaran=g[1])
+        if jenis == "DERET":
+            return dict(dasar, t="Deret", nama=g[0],
+                        isi=[parse_ungkapan(x, tok["berkas"]) for x in pisah_argumen(g[1])])
+        if jenis == "DERET_KOSONG":
+            return dict(dasar, t="Deret", nama=g[0], isi=[])
+        if jenis == "PETA":
+            pasangan = []
+            for bagian in pisah_argumen(g[1]):
+                if "=" not in bagian:
+                    self.galat("Isi peta harus berbentuk 'kunci = nilai'.", tok)
+                k, v = bagian.split("=", 1)
+                k = k.strip().strip('"')
+                pasangan.append((k, parse_ungkapan(v.strip(), tok["berkas"])))
+            return dict(dasar, t="Peta", nama=g[0], pasangan=pasangan)
+        if jenis == "PETA_KOSONG":
+            return dict(dasar, t="Peta", nama=g[0], pasangan=[])
+        if jenis == "HIMPUNAN":
+            return dict(dasar, t="Himpunan", nama=g[0])
+        if jenis == "DERET_TAMBAH":
+            return dict(dasar, t="DeretTambah", nama=g[1], nilai=parse_ungkapan(g[0], tok["berkas"]))
+        if jenis == "HIMPUNAN_TAMBAH":
+            return dict(dasar, t="HimpunanTambah", nama=g[1], nilai=parse_ungkapan(g[0], tok["berkas"]))
+        if jenis == "PETA_UBAH":
+            return dict(dasar, t="PetaUbah", nama=g[1], kunci=g[0], nilai=parse_ungkapan(g[2], tok["berkas"]))
+        if jenis == "DERET_UBAH":
+            return dict(dasar, t="DeretUbah", nama=g[1], indeks=int(g[0]), nilai=parse_ungkapan(g[2], tok["berkas"]))
+        if jenis == "JSON_URAI":
+            return dict(dasar, t="JsonUrai", sumber=g[0], sasaran=g[1])
+        if jenis == "JSON_SUSUN":
+            return dict(dasar, t="JsonSusun", sumber=g[0], sasaran=g[1])
+        if jenis == "HTTP_GET":
+            return dict(dasar, t="HttpGet", url=parse_ungkapan(g[0], tok["berkas"]), sasaran=g[1])
+        if jenis == "HTTP_POST":
+            return dict(dasar, t="HttpPost", url=parse_ungkapan(g[0], tok["berkas"]), isi=g[1], sasaran=g[2])
+        if jenis == "HTTP_KEPALA":
+            return dict(dasar, t="HttpKepala", nama=g[0])
+        if jenis == "HTTP_JEDA":
+            return dict(dasar, t="HttpJeda", detik=int(g[0]))
+        if jenis == "SELAMA_DERET":
+            tubuh = self.blok(("SELESAI",))
+            if not self.peek() or self.peek()["jenis"] != "SELESAI":
+                self.galat("Blok 'untuk setiap' belum ditutup dengan 'selesai'.", tok)
+            self.i += 1
+            return dict(dasar, t="SelamaDeret", item=g[0], deret=g[1], tubuh=tubuh)
+        if jenis == "SELAMA_RENTANG":
+            tubuh = self.blok(("SELESAI",))
+            if not self.peek() or self.peek()["jenis"] != "SELESAI":
+                self.galat("Blok 'untuk setiap' belum ditutup dengan 'selesai'.", tok)
+            self.i += 1
+            return dict(dasar, t="SelamaRentang", item=g[0],
+                        dari=parse_ungkapan(g[1], tok["berkas"]),
+                        sampai=parse_ungkapan(g[2], tok["berkas"]), tubuh=tubuh)
+        if jenis == "COBA":
+            tubuh = self.blok(("JIKA_GAGAL", "SELESAI"))
+            gagal = []
+            if self.peek() and self.peek()["jenis"] == "JIKA_GAGAL":
+                self.i += 1
+                gagal = self.blok(("SELESAI",))
+            if not self.peek() or self.peek()["jenis"] != "SELESAI":
+                self.galat("Blok 'coba' belum ditutup dengan 'selesai'.", tok)
+            self.i += 1
+            return dict(dasar, t="Coba", tubuh=tubuh, gagal=gagal)
+        if jenis == "ARGUMEN":
+            return dict(dasar, t="Argumen", nama=g[0])
+        if jenis == "KELUAR":
+            return dict(dasar, t="Keluar", kode=int(g[0]) if g[0] else 0)
+        if jenis == "TUNGGU":
+            return dict(dasar, t="Tunggu", milidetik=int(g[0]))
         if jenis == "AMBIL":
             return dict(dasar, t="Ambil", modul=g[0], nama=g[1])
         if jenis == "SERAHKAN":

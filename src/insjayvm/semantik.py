@@ -1,7 +1,10 @@
 class Penganalisis:
     BAWAAN = {
         "akar": 1, "pangkat": 2, "bulat": 1, "lantai": 1, "acak": 0,
-        "waktu_sekarang": 0,
+        "waktu_sekarang": 0, "pangkas": 1, "ganti": 3, "pisah": 2, "gabung": 2,
+        "cocok_pola": 2, "ganti_pola": 3, "cari_pola": 2, "gabung_peta": 2,
+        "anggota": 2, "punya": 2, "jenis": 1, "tidur": 1,
+        "http_get": 1, "http_post": 2,
     }
 
     def __init__(self):
@@ -50,7 +53,8 @@ class Penganalisis:
         t = n["t"]
         if t in ("Angka", "Teks", "Benar", "Salah"):
             return
-        if t in ("Wadah", "Panjang", "KeAngka", "HurufKecil", "HurufBesar"):
+        if t in ("Wadah", "Panjang", "KeAngka", "HurufKecil", "HurufBesar",
+                 "KeTeks", "AnggotaPeta", "AnggotaDeret", "AnggotaJalur"):
             if not self.ada(n["nama"]):
                 self.galat(asal, "Wadah '%s' dipakai sebelum pernah disiapkan." % n["nama"])
             else:
@@ -64,9 +68,11 @@ class Penganalisis:
             self.periksa_ungkapan(n["kanan"], asal)
         elif t == "Tidak":
             self.periksa_ungkapan(n["anak"], asal)
-        elif t in ("Kondisi", "Mengandung"):
+        elif t in ("Kondisi", "Mengandung", "Memiliki", "Memuat", "CocokPola"):
             self.periksa_ungkapan(n["kiri"], asal)
             self.periksa_ungkapan(n["kanan"], asal)
+        elif t == "Adalah":
+            self.periksa_ungkapan(n["kiri"], asal)
         elif t == "Kebenaran":
             self.periksa_ungkapan(n["expr"], asal)
 
@@ -81,9 +87,11 @@ class Penganalisis:
             return
         f = self.fungsi[nama]
         f["dipakai"] = True
-        if f["jumlah"] != jumlah_arg:
-            self.galat(asal, "Kebiasaan '%s' menerima %d isian, tetapi diberi %d."
-                       % (nama, f["jumlah"], jumlah_arg))
+        wajib = f.get("wajib", f["jumlah"])
+        if jumlah_arg < wajib or jumlah_arg > f["jumlah"]:
+            rentang = "%d" % f["jumlah"] if wajib == f["jumlah"] else "%d sampai %d" % (wajib, f["jumlah"])
+            self.galat(asal, "Kebiasaan '%s' menerima %s isian, tetapi diberi %d."
+                       % (nama, rentang, jumlah_arg))
 
     def analisis(self, program):
         for n in program["isi"]:
@@ -133,10 +141,16 @@ class Penganalisis:
             for a in n["tubuh"]:
                 self.kalimat(a)
         elif t == "Kebiasaan":
-            self.fungsi[n["nama"]] = {"jumlah": len(n["params"]), "simpul": n, "dipakai": False}
+            bawaan_k = n.get("bawaan") or [None] * len(n["params"])
+            wajib = sum(1 for b in bawaan_k if b is None)
+            self.fungsi[n["nama"]] = {"jumlah": len(n["params"]), "wajib": wajib,
+                                       "simpul": n, "dipakai": False}
             self.dorong()
             for p in n["params"]:
                 self.deklare(p, n)
+            for b in (n.get("bawaan") or []):
+                if b is not None:
+                    self.periksa_ungkapan(b, n)
             self.dalam_fungsi += 1
             for a in n["tubuh"]:
                 self.kalimat(a)
@@ -166,6 +180,75 @@ class Penganalisis:
                 self.fungsi[n["fungsi"]]["dipakai"] = True
         elif t == "BacaIsian":
             self.deklare(n["sasaran"], n)
+        elif t == "Deret":
+            for x in n["isi"]:
+                self.periksa_ungkapan(x, n)
+            self.deklare(n["nama"], n)
+        elif t == "Peta":
+            for _, v in n["pasangan"]:
+                self.periksa_ungkapan(v, n)
+            self.deklare(n["nama"], n)
+        elif t == "Himpunan":
+            self.deklare(n["nama"], n)
+        elif t in ("DeretTambah", "HimpunanTambah"):
+            if not self.ada(n["nama"]):
+                self.galat(n, "Wadah '%s' dipakai sebelum pernah disiapkan." % n["nama"])
+            else:
+                self.tandai(n["nama"])
+            self.periksa_ungkapan(n["nilai"], n)
+        elif t in ("PetaUbah", "DeretUbah"):
+            if not self.ada(n["nama"]):
+                self.galat(n, "Wadah '%s' dipakai sebelum pernah disiapkan." % n["nama"])
+            else:
+                self.tandai(n["nama"])
+            self.periksa_ungkapan(n["nilai"], n)
+        elif t in ("JsonUrai", "JsonSusun"):
+            if not self.ada(n["sumber"]):
+                self.galat(n, "Wadah '%s' dipakai sebelum pernah disiapkan." % n["sumber"])
+            else:
+                self.tandai(n["sumber"])
+            self.deklare(n["sasaran"], n)
+        elif t == "HttpGet":
+            self.periksa_ungkapan(n["url"], n)
+            self.deklare(n["sasaran"], n)
+        elif t == "HttpPost":
+            self.periksa_ungkapan(n["url"], n)
+            if not self.ada(n["isi"]):
+                self.galat(n, "Wadah '%s' dipakai sebelum pernah disiapkan." % n["isi"])
+            else:
+                self.tandai(n["isi"])
+            self.deklare(n["sasaran"], n)
+        elif t == "HttpKepala":
+            if not self.ada(n["nama"]):
+                self.galat(n, "Wadah '%s' dipakai sebelum pernah disiapkan." % n["nama"])
+            else:
+                self.tandai(n["nama"])
+        elif t == "HttpJeda" or t == "Keluar" or t == "Tunggu":
+            pass
+        elif t == "SelamaDeret":
+            if not self.ada(n["deret"]):
+                self.galat(n, "Wadah '%s' dipakai sebelum pernah disiapkan." % n["deret"])
+            else:
+                self.tandai(n["deret"])
+            self.deklare(n["item"], n)
+            for a in n["tubuh"]:
+                self.kalimat(a)
+        elif t == "SelamaRentang":
+            self.periksa_ungkapan(n["dari"], n)
+            self.periksa_ungkapan(n["sampai"], n)
+            self.deklare(n["item"], n)
+            for a in n["tubuh"]:
+                self.kalimat(a)
+        elif t == "Coba":
+            for a in n["tubuh"]:
+                self.kalimat(a)
+            self.dorong()
+            self.deklare("galat", n)
+            for a in n["gagal"]:
+                self.kalimat(a)
+            self.tarik()
+        elif t == "Argumen":
+            self.deklare(n["nama"], n)
         elif t == "Ambil":
             self.deklare(n["nama"], n)
         elif t == "Serahkan":

@@ -6,7 +6,7 @@ from . import pipa
 from .lexer import GalatInsJay
 from .parser import Parser
 from .semantik import analisis
-from .vm import Mesin
+from .vm import Mesin, KeluarSignal
 from . import __version__
 
 BANTUAN = """
@@ -22,6 +22,7 @@ PEMAKAIAN
   insjay ast <berkas>              tampilkan pohon AST
   insjay lex <berkas>              tampilkan token hasil lexing
   insjay bytecode <berkas>         tampilkan bytecode hasil kompilasi
+  insjay buat-mandiri              bungkus jadi satu program mandiri (butuh pyinstaller)
   insjay versi                     tampilkan versi
   insjay bantuan                   tampilkan bantuan ini
 
@@ -170,7 +171,7 @@ def pastikan_ada(berkas):
         sys.exit(2)
 
 
-def cmd_jalankan(berkas):
+def cmd_jalankan(berkas, argv_program=None):
     pastikan_ada(berkas)
     if berkas.endswith(".Jayc") or pipa.apakah_bytecode(berkas):
         bytecode = pipa.muat_bytecode(berkas)
@@ -180,7 +181,7 @@ def cmd_jalankan(berkas):
             sys.stderr.write("\n[Kisah terhenti] Perbaiki galat di atas dahulu.\n")
             sys.exit(1)
         bytecode = hasil["bytecode"]
-    Mesin(bytecode, masukan=masukan_stdin).jalankan()
+    Mesin(bytecode, masukan=masukan_stdin, argv=argv_program or []).jalankan()
 
 
 def cmd_kompilasi(berkas, keluaran):
@@ -226,6 +227,23 @@ def cmd_lex(berkas):
         print("%4d  %-14s %s" % (t["baris"], t["jenis"], isi))
 
 
+def cmd_mandiri():
+    import shutil
+    import subprocess
+    if shutil.which("pyinstaller") is None:
+        sys.stderr.write("pyinstaller belum ada. Jalankan: pip install pyinstaller\n")
+        return 1
+    akar = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    masuk = os.path.join(akar, "masuk.py")
+    if not os.path.isfile(masuk):
+        sys.stderr.write("Berkas masuk.py tidak ditemukan di %s\n" % akar)
+        return 1
+    subprocess.run(["pyinstaller", "--onefile", "--name", "insjay",
+                    "--paths", os.path.join(akar, "src"), masuk], check=False)
+    print("Berkas mandiri ada di dist/insjay")
+    return 0
+
+
 def cmd_bytecode(berkas):
     pastikan_ada(berkas)
     hasil = pipa.proses(berkas)
@@ -248,7 +266,7 @@ def main(argv=None):
     sisa, keluaran = ambil_opsi(argv[1:])
     try:
         if perintah in ("jalankan", "run"):
-            cmd_jalankan(sisa[0] if sisa else None)
+            cmd_jalankan(sisa[0] if sisa else None, sisa[1:])
         elif perintah in ("kompilasi", "build"):
             cmd_kompilasi(sisa[0] if sisa else None, keluaran)
         elif perintah in ("periksa", "check"):
@@ -259,12 +277,16 @@ def main(argv=None):
             cmd_lex(sisa[0] if sisa else None)
         elif perintah == "bytecode":
             cmd_bytecode(sisa[0] if sisa else None)
+        elif perintah == "buat-mandiri":
+            return cmd_mandiri()
         else:
             if perintah.endswith(".Jay") or perintah.endswith(".Jayc") or os.path.exists(perintah):
-                cmd_jalankan(perintah)
+                cmd_jalankan(perintah, argv[1:])
             else:
                 sys.stderr.write("Perintah '%s' tidak dikenal.\n%s\n" % (perintah, BANTUAN))
                 return 2
+    except KeluarSignal as e:
+        return e.kode
     except GalatInsJay as e:
         sys.stderr.write("[Gagal] %s\n" % e.format())
         return 1

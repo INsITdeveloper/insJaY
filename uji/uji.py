@@ -85,5 +85,39 @@ open(p3, "w").write('# Bab 1\naku menyiapkan halaman bernama utama berjudul "Uji
 out, err, kode = insjay(["jalankan", p3])
 uji("perintah web ditolak mesin dengan pesan jelas", kode != 0 and "target web" in err)
 
+out, _, kode = insjay(["contoh/fitur.Jay"])
+uji("deret, peta, himpunan, loop, teks, pola, JSON",
+    "Jumlah buah: 4" in out and "Ukuran himpunan: 1" in out
+    and "Judul pertama: Drama A" in out and "Rapi: Drama Korea Terbaru" in out)
+
+p_db = os.path.join(tmp, "db.Jay")
+open(p_db, "w").write(
+    '# Bab 1: Bawaan\n'
+    'aku membuat kebiasaan bernama sapa yang menerima nama, sapaan = "Halo"\n'
+    '    aku mengembalikan wadah sapaan + ", " + wadah nama + "!".\n'
+    'selesai.\n'
+    'aku berkata: hasil dari kebiasaan sapa dengan "Kaisar".\n'
+    'aku berkata: hasil dari kebiasaan sapa dengan "Kaisar", "Hai".\n')
+out, _, _ = insjay([p_db])
+uji("nilai bawaan parameter", "Halo, Kaisar!" in out and "Hai, Kaisar!" in out)
+
+p_gagal = os.path.join(tmp, "gagal.Jay")
+open(p_gagal, "w").write(
+    '# Bab 1: Coba\n'
+    'aku menyiapkan wadah bernama t yang berisi "bukan json".\n'
+    'coba\n'
+    '    aku mengurai JSON dari wadah t ke dalam wadah d.\n'
+    'jika gagal\n'
+    '    aku berkata: "tertangkap: " + wadah galat.\n'
+    'selesai.\n')
+out, _, _ = insjay([p_gagal])
+uji("coba / jika gagal menangkap kesalahan", "tertangkap:" in out)
+
+out, _, kode = insjay(["contoh/scraper_contoh.Jay"])
+uji("argumen CLI & kode keluar", kode == 2 and "Pakai:" in out)
+
+out, _, _ = insjay(["periksa", "contoh/scraper_contoh.Jay"])
+uji("scraper lolos analisis semantik", "ALUR CERITA OK" in out)
+
 print("\nSelesai: %d lulus, %d gagal." % (lulus, gagal))
 sys.exit(1 if gagal else 0)

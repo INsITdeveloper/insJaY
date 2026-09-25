@@ -1,0 +1,57 @@
+# Bab 1: Struktur Data
+
+aku menyiapkan deret bernama buah yang berisi "apel", "mangga", "jeruk".
+aku menambahkan "pisang" ke dalam deret buah.
+aku berkata: "Jumlah buah: " + panjang dari wadah buah.
+aku berkata: "Buah pertama: " + benda ke-1 dari wadah buah.
+
+aku menyiapkan peta bernama data yang berisi nama = "Kaisar", umur = 21.
+aku berkata: "Nama: " + anggota "nama" dari wadah data.
+aku mengubah anggota "umur" dari peta data menjadi 22.
+jika wadah data memiliki "nama" maka
+    aku berkata: "Punya kunci nama.".
+selesai.
+
+# Bab 2: Himpunan dan Iterasi
+
+aku menyiapkan himpunan bernama terlihat.
+aku menambahkan "pinedrama" ke dalam himpunan terlihat.
+aku menambahkan "pinedrama" ke dalam himpunan terlihat.
+jika wadah terlihat memuat "pinedrama" maka
+    aku berkata: "Sudah pernah dilihat.".
+selesai.
+aku berkata: "Ukuran himpunan: " + panjang dari wadah terlihat.
+
+aku menyiapkan wadah bernama total yang berisi 0.
+untuk setiap b dalam deret buah, ulangi
+    aku berkata: "Buah: " + wadah b.
+    aku menambahkan 1 ke dalam wadah total.
+selesai.
+aku berkata: "Total buah: " + wadah total.
+
+untuk setiap angka dari 1 sampai 3, ulangi
+    aku berkata: "Angka " + wadah angka.
+selesai.
+
+# Bab 3: Teks dan Pola
+
+aku menyiapkan wadah bernama kasar yang berisi "  Drama Korea Terbaru!!  ".
+aku menyiapkan wadah bernama bersih yang berisi hasil dari kebiasaan pangkas dengan wadah kasar.
+aku menyiapkan wadah bernama rapi yang berisi hasil dari kebiasaan ganti_pola dengan wadah bersih, "[^A-Za-z ]", "".
+aku berkata: "Rapi: " + wadah rapi.
+jika wadah rapi cocok dengan pola "Drama" maka
+    aku berkata: "Mengandung kata Drama.".
+selesai.
+
+# Bab 4: JSON
+
+aku menyiapkan wadah bernama teks_json yang berisi "{\"book\": {\"list\": [{\"name\": \"Drama A\"}, {\"name\": \"Drama B\"}]}}".
+aku mengurai JSON dari wadah teks_json ke dalam wadah jauh.
+aku menyiapkan wadah bernama daftar yang berisi anggota dalam "book.list" dari wadah jauh.
+aku menyiapkan wadah bernama buku1 yang berisi benda ke-1 dari wadah daftar.
+aku berkata: "Judul pertama: " + anggota "name" dari wadah buku1.
+aku berkata: "Judul kedua  : " + anggota dalam "1.name" dari wadah daftar.
+aku menyusun JSON dari wadah buku1 ke dalam wadah balik.
+aku berkata: "JSON buku1: " + wadah balik.
+aku menyiapkan wadah bernama aman yang berisi anggota dalam "tidak.ada" dari wadah jauh.
+aku berkata: "Jalur kosong aman: '" + teks dari wadah aman + "'".

@@ -1,0 +1,44 @@
+# Bab 1: Membaca Perintah dari Terminal
+# Contoh: insjay scraper_contoh.Jay https://api.github.com/repos/INsITdeveloper/insJaY
+
+aku membaca argumen ke dalam wadah masuk.
+jika panjang dari wadah masuk lebih kecil dari 1 maka
+    aku berkata: "Pakai: insjay scraper_contoh.Jay <url>".
+    aku mengakhiri dengan kode 2.
+selesai.
+aku menyiapkan wadah bernama url yang berisi benda ke-1 dari wadah masuk.
+
+# Bab 2: Menyiapkan Permintaan
+
+aku mengatur jeda permintaan menjadi 15 detik.
+aku menyiapkan peta bernama kepala yang berisi "User-Agent" = "insJaY-scraper".
+aku mengatur kepala permintaan dari wadah kepala.
+
+# Bab 3: Mengambil Data
+
+coba
+    aku meminta GET dari wadah url ke dalam wadah balasan.
+jika gagal
+    aku berkata: "Gagal mengambil data: " + wadah galat.
+    aku mengakhiri dengan kode 1.
+selesai.
+
+aku berkata: "Status HTTP: " + anggota "status" dari wadah balasan.
+
+# Bab 4: Membaca Hasil
+
+jika anggota "ok" dari wadah balasan maka
+    aku menyiapkan wadah bernama teksbalasan yang berisi anggota "teks" dari wadah balasan.
+    aku mengurai JSON dari wadah teksbalasan ke dalam wadah data.
+    jika wadah data adalah peta maka
+        aku berkata: "Nama    : " + anggota "name" dari wadah data.
+        aku berkata: "Pemilik : " + anggota dalam "owner.login" dari wadah data.
+        aku berkata: "Bintang : " + anggota "stargazers_count" dari wadah data.
+    selesai.
+kalau tidak
+    aku berkata: "Permintaan tidak berhasil.".
+selesai.
+
+# Bab 5: Penutup
+
+aku berkata: "Selesai.".

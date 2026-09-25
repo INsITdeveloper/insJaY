@@ -1,4 +1,4 @@
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 
 from .lexer import GalatInsJay
 from .pipa import proses, simpan_bytecode, muat_bytecode

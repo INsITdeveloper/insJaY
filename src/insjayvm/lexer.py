@@ -42,6 +42,28 @@ POLA = [
     ("JAWABAN", re.compile(r"^aku\s+menaruh\s+jawaban\s+(.+?)\s+ke\s+dalam\s+halaman\s+(\w+)$", re.I)),
     ("GANTI_JAWABAN", re.compile(r"^aku\s+mengubah\s+jawaban\s+di\s+halaman\s+(\w+)\s+menjadi\s+(.+)$", re.I)),
     ("BACA_ISIAN", re.compile(r"^aku\s+membaca\s+kotak\s+isian\s+(\w+)\s+ke\s+dalam\s+wadah\s+(\w+)$", re.I)),
+    ("DERET", re.compile(r"^aku\s+menyiapkan\s+deret\s+bernama\s+(\w+)\s+yang\s+berisi\s+(.+)$", re.I)),
+    ("DERET_KOSONG", re.compile(r"^aku\s+menyiapkan\s+deret\s+bernama\s+(\w+)$", re.I)),
+    ("PETA", re.compile(r"^aku\s+menyiapkan\s+peta\s+bernama\s+(\w+)\s+yang\s+berisi\s+(.+)$", re.I)),
+    ("PETA_KOSONG", re.compile(r"^aku\s+menyiapkan\s+peta\s+bernama\s+(\w+)$", re.I)),
+    ("HIMPUNAN", re.compile(r"^aku\s+menyiapkan\s+himpunan\s+bernama\s+(\w+)$", re.I)),
+    ("DERET_TAMBAH", re.compile(r"^aku\s+menambahkan\s+(.+?)\s+ke\s+dalam\s+deret\s+(\w+)$", re.I)),
+    ("HIMPUNAN_TAMBAH", re.compile(r"^aku\s+menambahkan\s+(.+?)\s+ke\s+dalam\s+himpunan\s+(\w+)$", re.I)),
+    ("PETA_UBAH", re.compile(r'^aku\s+mengubah\s+anggota\s+"(.+)"\s+dari\s+peta\s+(\w+)\s+menjadi\s+(.+)$', re.I)),
+    ("DERET_UBAH", re.compile(r"^aku\s+mengubah\s+benda\s+ke-(\d+)\s+dari\s+deret\s+(\w+)\s+menjadi\s+(.+)$", re.I)),
+    ("JSON_URAI", re.compile(r"^aku\s+mengurai\s+json\s+dari\s+wadah\s+(\w+)\s+ke\s+dalam\s+wadah\s+(\w+)$", re.I)),
+    ("JSON_SUSUN", re.compile(r"^aku\s+menyusun\s+json\s+dari\s+wadah\s+(\w+)\s+ke\s+dalam\s+wadah\s+(\w+)$", re.I)),
+    ("HTTP_GET", re.compile(r'^aku\s+meminta\s+get\s+dari\s+("[^"]*"|wadah\s+\w+)\s+ke\s+dalam\s+wadah\s+(\w+)$', re.I)),
+    ("HTTP_POST", re.compile(r'^aku\s+meminta\s+post\s+ke\s+("[^"]*"|wadah\s+\w+)\s+dengan\s+isi\s+wadah\s+(\w+)\s+ke\s+dalam\s+wadah\s+(\w+)$', re.I)),
+    ("HTTP_KEPALA", re.compile(r"^aku\s+mengatur\s+kepala\s+permintaan\s+dari\s+wadah\s+(\w+)$", re.I)),
+    ("HTTP_JEDA", re.compile(r"^aku\s+mengatur\s+jeda\s+permintaan\s+menjadi\s+(\d+)\s+detik$", re.I)),
+    ("SELAMA_DERET", re.compile(r"^untuk\s+setiap\s+(\w+)\s+dalam\s+deret\s+(\w+),\s*ulangi$", re.I)),
+    ("SELAMA_RENTANG", re.compile(r"^untuk\s+setiap\s+(\w+)\s+dari\s+(.+?)\s+sampai\s+(.+?),\s*ulangi$", re.I)),
+    ("COBA", re.compile(r"^coba$", re.I)),
+    ("JIKA_GAGAL", re.compile(r"^jika\s+gagal$", re.I)),
+    ("ARGUMEN", re.compile(r"^aku\s+membaca\s+argumen\s+ke\s+dalam\s+wadah\s+(\w+)$", re.I)),
+    ("KELUAR", re.compile(r"^aku\s+mengakhiri(?:\s+dengan\s+kode\s+(\d+))?$", re.I)),
+    ("TUNGGU", re.compile(r"^aku\s+menunggu\s+(\d+)\s+milidetik$", re.I)),
     ("AMBIL", re.compile(r'^aku\s+mengambil\s+dari\s+"(.+)"\s+ke\s+dalam\s+wadah\s+(\w+)$', re.I)),
     ("SERAHKAN", re.compile(r"^aku\s+menyerahkan\s+kebiasaan\s+(\w+)\s+kepada\s+dunia$", re.I)),
 ]
@@ -83,6 +105,10 @@ FRASA_HURUFKECIL = "huruf kecil dari wadah"
 FRASA_HURUFBESAR = "huruf besar dari wadah"
 FRASA_VAR = "wadah"
 FRASA_PANGGIL = "hasil dari kebiasaan"
+FRASA_JALUR = "anggota dalam"
+FRASA_PETA = "anggota"
+FRASA_DERET = "benda ke-"
+FRASA_KETEKS = "teks dari wadah"
 
 
 def lex_ungkapan(s, berkas=None):
@@ -99,13 +125,54 @@ def lex_ungkapan(s, berkas=None):
             i += 1
             continue
         if c == '"':
-            j = s.find('"', i + 1)
-            if j < 0:
+            buf = []
+            j = i + 1
+            while j < len(s) and s[j] != '"':
+                if s[j] == "\\" and j + 1 < len(s):
+                    nx = s[j + 1]
+                    buf.append({"n": "\n", "t": "\t", '"': '"', "\\": "\\"}.get(nx, nx))
+                    j += 2
+                else:
+                    buf.append(s[j])
+                    j += 1
+            if j >= len(s):
                 galat("Tanda kutip pembuka tidak pernah ditutup.")
-            toks.append(("teks", s[i + 1:j]))
+            toks.append(("teks", "".join(buf)))
             i = j + 1
             continue
         cocok = False
+        if s.startswith(FRASA_JALUR, i):
+            i += len(FRASA_JALUR)
+            m = re.match(r'\s*"([^"]*)"\s+dari\s+wadah\s+(\w+)', s[i:])
+            if not m:
+                galat("'anggota dalam \"jalur\" dari wadah x' tidak lengkap.")
+            toks.append(("jalur", m.group(2), m.group(1)))
+            i += m.end()
+            continue
+        if s.startswith(FRASA_PETA, i):
+            i += len(FRASA_PETA)
+            m = re.match(r'\s*"([^"]*)"\s+dari\s+wadah\s+(\w+)', s[i:])
+            if not m:
+                galat("'anggota \"kunci\" dari wadah x' tidak lengkap.")
+            toks.append(("peta", m.group(2), m.group(1)))
+            i += m.end()
+            continue
+        if s.startswith(FRASA_DERET, i):
+            i += len(FRASA_DERET)
+            m = re.match(r"\s*(\d+)\s+dari\s+wadah\s+(\w+)", s[i:])
+            if not m:
+                galat("'benda ke-N dari wadah x' tidak lengkap.")
+            toks.append(("deret", m.group(2), int(m.group(1))))
+            i += m.end()
+            continue
+        if s.startswith(FRASA_KETEKS, i):
+            i += len(FRASA_KETEKS)
+            m = re.match(r"\s*(\w+)", s[i:])
+            if not m:
+                galat("'teks dari wadah' harus diikuti nama wadah.")
+            toks.append(("keteks", m.group(1)))
+            i += m.end()
+            continue
         for frasa, jenis in (
             (FRASA_PANJANG, "panjang"),
             (FRASA_KEWADAH, "keangka"),
