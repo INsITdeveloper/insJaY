@@ -26,9 +26,9 @@ POLA = [
     ("SUB", re.compile(r"^aku\s+mengurangi\s+wadah\s+(\w+)\s+dengan\s+(.+)$", re.I)),
     ("BERKATA", re.compile(r"^aku\s+berkata:\s*(.+)$", re.I)),
     ("JIKA", re.compile(r"^jika\s+(.+?)\s+maka$", re.I)),
-    ("KALAU_TIDAK", re.compile(r"^kalau\s+tidak$", re.I)),
+    ("KALAU_TIDAK", re.compile(r"^(?:kalau\s+tidak|lain|else)$", re.I)),
     ("SELAMA", re.compile(r"^selama\s+(.+?),\s*ulangi$", re.I)),
-    ("SELESAI", re.compile(r"^selesai$", re.I)),
+    ("SELESAI", re.compile(r"^(?:selesai|\})$", re.I)),
     ("KEBIASAAN", re.compile(r"^aku\s+membuat\s+kebiasaan\s+bernama\s+(\w+)(?:\s+yang\s+menerima\s+(.+))?$", re.I)),
     ("PANGGIL", re.compile(r"^aku\s+memanggil\s+kebiasaan\s+(\w+)(?:\s+dengan\s+(.+))?$", re.I)),
     ("KEMBALI", re.compile(r"^aku\s+mengembalikan\s+(.+)$", re.I)),
@@ -66,6 +66,11 @@ POLA = [
     ("TUNGGU", re.compile(r"^aku\s+menunggu\s+(\d+)\s+milidetik$", re.I)),
     ("AMBIL", re.compile(r'^aku\s+mengambil\s+dari\s+"(.+)"\s+ke\s+dalam\s+wadah\s+(\w+)$', re.I)),
     ("SERAHKAN", re.compile(r"^aku\s+menyerahkan\s+kebiasaan\s+(\w+)\s+kepada\s+dunia$", re.I)),
+    ("LET_ALIAS", re.compile(r"^(?:tetapkan|let)\s+(\w+)\s*(?::=|=)\s*(.+)$", re.I)),
+    ("SET_ALIAS", re.compile(r"^(?:ubah|set)\s+(\w+)\s*(?::=|=)\s*(.+)$", re.I)),
+    ("BERKATA_CALL", re.compile(r"^(?:print|cetak)\((.*)\)$", re.I)),
+    ("BERKATA_ALIAS", re.compile(r"^(?:tulis|cetak)\s+(.+)$", re.I)),
+    ("ASSIGN", re.compile(r"^(\w+)\s*(?::=|=)\s*(.+)$", re.I)),
 ]
 
 JENIS_WEB = frozenset([

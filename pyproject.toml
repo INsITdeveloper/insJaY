@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "insjay"
-version = "0.7.0"
+version = "0.7.1"
 description = "insJaY — bahasa pemrograman naratif Indonesia dengan compiler + runtime sendiri (bytecode + Mesin insJaY)."
 readme = "README.md"
 requires-python = ">=3.8"

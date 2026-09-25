@@ -10,6 +10,28 @@ PERBANDINGAN = [
 ]
 
 
+def _pisah_kunci(bagian):
+    depth = 0
+    in_str = False
+    i = 0
+    while i < len(bagian):
+        c = bagian[i]
+        if c == '"':
+            in_str = not in_str
+        elif not in_str:
+            if c == "(":
+                depth += 1
+            elif c == ")":
+                depth -= 1
+            elif depth == 0 and c in "=:":
+                nilai = bagian[i + 1:]
+                if c == ":" and nilai.startswith("="):
+                    nilai = nilai[1:]
+                return bagian[:i], nilai
+        i += 1
+    return None, None
+
+
 def find_top_level(s, phrase):
     depth = 0
     in_str = False
@@ -234,10 +256,19 @@ class Parser:
 
         if jenis == "BAB":
             return dict(dasar, t="Bab", judul=tok["judul"])
-        if jenis == "LET":
+        if jenis in ("LET", "LET_ALIAS"):
             return dict(dasar, t="Let", nama=g[0], nilai=parse_ungkapan(g[1], tok["berkas"]))
-        if jenis == "SET":
+        if jenis in ("SET", "SET_ALIAS"):
             return dict(dasar, t="Set", nama=g[0], nilai=parse_ungkapan(g[1], tok["berkas"]))
+        if jenis == "ASSIGN":
+            return dict(dasar, t="Assign", nama=g[0], nilai=parse_ungkapan(g[1], tok["berkas"]))
+        if jenis == "BERKATA_CALL":
+            isi = g[0].strip()
+            if not isi:
+                return dict(dasar, t="Berkata", nilai={"t": "Teks", "nilai": ""})
+            return dict(dasar, t="Berkata", nilai=parse_ungkapan(isi, tok["berkas"]))
+        if jenis == "BERKATA_ALIAS":
+            return dict(dasar, t="Berkata", nilai=parse_ungkapan(g[0], tok["berkas"]))
         if jenis == "ADD":
             return dict(dasar, t="Tambah", nama=g[1], nilai=parse_ungkapan(g[0], tok["berkas"]))
         if jenis == "SUB":
@@ -314,11 +345,10 @@ class Parser:
         if jenis == "PETA":
             pasangan = []
             for bagian in pisah_argumen(g[1]):
-                if "=" not in bagian:
-                    self.galat("Isi peta harus berbentuk 'kunci = nilai'.", tok)
-                k, v = bagian.split("=", 1)
-                k = k.strip().strip('"')
-                pasangan.append((k, parse_ungkapan(v.strip(), tok["berkas"])))
+                kunci, nilai = _pisah_kunci(bagian)
+                if kunci is None:
+                    self.galat("Isi peta harus berbentuk 'kunci = nilai' atau 'kunci: nilai'.", tok)
+                pasangan.append((kunci.strip().strip('"'), parse_ungkapan(nilai.strip(), tok["berkas"])))
             return dict(dasar, t="Peta", nama=g[0], pasangan=pasangan)
         if jenis == "PETA_KOSONG":
             return dict(dasar, t="Peta", nama=g[0], pasangan=[])

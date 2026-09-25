@@ -281,6 +281,17 @@ class Mesin:
                     nilai.append(self._cari(f, ins["arg"]))
                 elif op == "STORE":
                     f["lokal"][ins["arg"]] = nilai.pop()
+                elif op == "ASSIGN":
+                    v = nilai.pop()
+                    nama = ins["arg"]
+                    f2 = f
+                    while f2 is not None:
+                        if nama in f2["lokal"]:
+                            f2["lokal"][nama] = v
+                            break
+                        f2 = f2.get("induk")
+                    else:
+                        f["lokal"][nama] = v
                 elif op == "SIMPAN":
                     self._tempat(f, ins["arg"])[ins["arg"]] = nilai.pop()
                 elif op == "POP":

@@ -124,5 +124,29 @@ uji("runtime: berkas + kripto",
     "Ditulis  : benar" in out and "SHA-256" in out and "Dihapus  : benar" in out
     and "Ada?     : salah" in out)
 
+out, _, _ = insjay(["periksa", "contoh/uji_http.Jay"])
+uji("peta menerima ':' gaya JSON", "ALUR CERITA OK" in out)
+
+p_alias = os.path.join(tmp, "alias.Jay")
+open(p_alias, "w").write(
+    '# Bab 1: Bentuk Pendek\n'
+    'tetapkan x = 5\n'
+    'ubah x = 6\n'
+    'tulis "Nilai x: " + wadah x\n'
+    'let y = 10\n'
+    'set y = 11\n'
+    'print(wadah y)\n'
+    'a = 1\n'
+    'a := 2\n'
+    'tulis wadah a\n'
+    'jika wadah x lebih besar dari 5 maka\n'
+    '    tulis "besar"\n'
+    'lain\n'
+    '    tulis "kecil"\n'
+    '}\n')
+out, _, _ = insjay([p_alias])
+uji("penyebut & lambang (tetapkan/let/tulis/print/:=/})",
+    "Nilai x: 6" in out and "11" in out and "besar" in out)
+
 print("\nSelesai: %d lulus, %d gagal." % (lulus, gagal))
 sys.exit(1 if gagal else 0)

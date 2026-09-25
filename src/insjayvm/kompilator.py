@@ -118,6 +118,9 @@ class Kompilator:
         if t == "Let":
             self.kompil_ungkapan(node["nilai"], out)
             self.emit(out, "STORE", node["nama"])
+        elif t == "Assign":
+            self.kompil_ungkapan(node["nilai"], out)
+            self.emit(out, "ASSIGN", node["nama"])
         elif t == "Set":
             self.kompil_ungkapan(node["nilai"], out)
             self.emit(out, "SIMPAN", node["nama"])

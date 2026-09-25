@@ -365,6 +365,38 @@ aku berkata: "Hasilnya " + wadah hasil.
 
 ---
 
+### 8. Bentuk pendek: penyebut & lambang
+
+Selain kalimat panjang, kalimat yang sama boleh ditulis singkat. Keduanya
+boleh dicampur dalam satu berkas — tidak ada yang dilarang.
+
+| Kalimat panjang | Penyebut pendek | Lambang umum |
+|-----------------|-----------------|--------------|
+| `aku menyiapkan wadah bernama x yang berisi 5` | `tetapkan x = 5` | `let x = 5` · `x = 5` · `x := 5` |
+| `aku mengganti isi wadah x menjadi 6` | `ubah x = 6` | `set x = 6` |
+| `aku berkata: "halo"` | `tulis "halo"` | `print(wadah x)` · `cetak(wadah x)` |
+| `kalau tidak` | `lain` | `else` |
+| `selesai` | — | `}` |
+
+Aturan pengambilan isi wadah tetap sama: di dalam ungkapan tetap ditulis
+`wadah x`, sehingga `print(wadah x)` dan `tulis wadah x` bermakna sama.
+
+```
+# Bab 1: Bentuk campur
+tetapkan x = 5
+ubah x = 6
+tulis "Nilai x: " + wadah x
+let y = 10
+print(wadah y)
+jika wadah x lebih besar dari 5 maka
+    tulis "besar"
+lain
+    tulis "kecil"
+}
+```
+
+---
+
 ## Penganalisis Semantik
 
 `insjay periksa berkas.Jay` memeriksa:

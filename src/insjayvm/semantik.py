@@ -125,6 +125,12 @@ class Penganalisis:
         elif t == "Let":
             self.periksa_ungkapan(n["nilai"], n)
             self.deklare(n["nama"], n)
+        elif t == "Assign":
+            self.periksa_ungkapan(n["nilai"], n)
+            if not self.ada(n["nama"]):
+                self.deklare(n["nama"], n)
+            else:
+                self.tandai(n["nama"])
         elif t in ("Set", "Tambah", "Kurang"):
             if not self.ada(n["nama"]):
                 self.galat(n, "Wadah '%s' diubah sebelum pernah disiapkan." % n["nama"])
