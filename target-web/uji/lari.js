@@ -1,8 +1,8 @@
 'use strict';
-// ===========================================================================
-// Uji cepat seluruh pipeline insJaY.
-// Jalankan: npm run uji
-// ===========================================================================
+
+
+
+
 
 const fs = require('fs');
 const os = require('os');
@@ -53,29 +53,29 @@ uji('lexing menghasilkan token', r.keluaran.includes('BAB') && r.keluaran.includ
 r = jalankan(['ast', 'contoh/kalkulator.Jay']);
 uji('AST terbentuk', r.keluaran.includes('KEBIASAAN tambah'));
 
-// galat semantik harus terdeteksi
+
 const tmp = path.join(os.tmpdir(), 'insjay-uji-galat.Jay');
 fs.writeFileSync(tmp, '# Bab 1\naku berkata: wadah hantu.\n');
 r = jalankan(['periksa', tmp]);
 uji('galat wadah tak dikenal terdeteksi', r.kode !== 0 && r.galat.includes('belum pernah disiapkan'));
 
-// kalimat ngawur harus ditolak
+
 const tmp2 = path.join(os.tmpdir(), 'insjay-uji-ngawur.Jay');
 fs.writeFileSync(tmp2, '# Bab 1\naku berkata: "hai".\nngawur total\n');
 r = jalankan(['jalankan', tmp2]);
 uji('kalimat tidak koheren ditolak', r.kode !== 0 && r.galat.includes('tidak mengikuti alur cerita'));
 
-// web -> html
+
 const tmp3 = path.join(os.tmpdir(), 'insjay-uji-web.html');
 r = jalankan(['web', 'contoh/web/kalkulator_web.Jay', '-o', tmp3]);
 const html = fs.existsSync(tmp3) ? fs.readFileSync(tmp3, 'utf8') : '';
 uji('kompilasi web menghasilkan HTML', html.includes('ins-tombol') && html.includes('__ins.halaman'));
 
-// ungkapan v0.4: huruf kecil + mengandung
+
 r = jalankan(['periksa', 'contoh/bot/whatsapp.Jay']);
 uji('fitur v0.4 (huruf kecil/mengandung) lulus semantik', r.keluaran.includes('ALUR CERITA'));
 
-// bot WhatsApp: kompilasi lalu panggil lewat host (mode demo)
+
 const jsBot = path.join(os.tmpdir(), 'insjay-uji-bot.js');
 jalankan(['kompilasi', 'contoh/bot/whatsapp.Jay', '-o', jsBot]);
 const hostPath = path.join(AKAR, 'contoh', 'bot', 'host.js');

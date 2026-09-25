@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 'use strict';
-// ===========================================================================
-// insjay — CLI bahasa insJaY
-// Pipeline: Lexing -> Parsing -> AST -> Penganalisis Semantik -> Kompilasi JS
-// ===========================================================================
+
+
+
+
 
 const fs = require('fs');
 const os = require('os');
@@ -91,7 +91,7 @@ function perintahJalankan(berkas) {
     const r = spawnSync(process.execPath, [temp], { stdio: 'inherit' });
     process.exit(r.status === null ? 1 : r.status);
   } finally {
-    try { fs.unlinkSync(temp); } catch (e) { /* abaikan */ }
+    try { fs.unlinkSync(temp); } catch (e) {  }
   }
 }
 
@@ -178,7 +178,7 @@ function main() {
       case 'ast': perintahAst(sisa[0]); break;
       case 'lex': perintahLex(sisa[0]); break;
       default:
-        // Pemakaian singkat: insjay berkas.Jay
+
         if (perintah.endsWith('.Jay') || fs.existsSync(perintah)) perintahJalankan(perintah);
         else { console.error(`Perintah '${perintah}' tidak dikenal.\n${BANTUAN}`); process.exit(2); }
     }

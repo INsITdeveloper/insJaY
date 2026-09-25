@@ -1,8 +1,8 @@
 'use strict';
-// ===========================================================================
-// TAHAP 5 — KOMPILASI
-// AST -> JavaScript. Target contoh: JS (Node + browser).
-// ===========================================================================
+
+
+
+
 
 function jsUngkapan(n) {
   switch (n.t) {

@@ -1,11 +1,10 @@
 'use strict';
-// ===========================================================================
-// RUNTIME + PEMBUNGKUS HTML
-// Pustaka bantu yang dipakai program .Jay hasil kompilasi.
-// ===========================================================================
 
-const RUNTIME_JS = `// ===== insJaY runtime v0.3 =====
-const __ins = {
+
+
+
+
+const RUNTIME_JS = `const __ins = {
   _out: [],
   _wadah: {},
   ambil(n){ return Object.prototype.hasOwnProperty.call(this._wadah, n) ? this._wadah[n] : undefined; },

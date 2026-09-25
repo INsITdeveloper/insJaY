@@ -1,8 +1,8 @@
 'use strict';
-// ===========================================================================
-// TAHAP 2 — PARSING
-// Token kalimat -> AST. Termasuk parser ungkapan dan parser kondisi.
-// ===========================================================================
+
+
+
+
 
 const { GalatInsJay, lexUngkapan, pisahArgumen } = require('./lexer');
 
@@ -15,7 +15,7 @@ const PERBANDINGAN = [
   ['lebih kecil dari', '<'],
 ];
 
-/** Cari frasa hanya di kedalaman teratas (di luar kutipan/kurung). */
+
 function findTopLevel(s, phrase) {
   let depth = 0, inStr = false;
   for (let i = 0; i < s.length; i++) {
@@ -30,9 +30,9 @@ function findTopLevel(s, phrase) {
   return -1;
 }
 
-// ---------------------------------------------------------------------------
-// Parser ungkapan
-// ---------------------------------------------------------------------------
+
+
+
 class ParserUngkapan {
   constructor(toks, berkas) { this.t = toks; this.p = 0; this.berkas = berkas; }
 
@@ -154,9 +154,9 @@ function parseKondisi(teks, berkas) {
   return { t: 'Kebenaran', expr: parseUngkapan(s, berkas) };
 }
 
-// ---------------------------------------------------------------------------
-// Parser kalimat
-// ---------------------------------------------------------------------------
+
+
+
 class Parser {
   constructor(tokens, berkas) { this.t = tokens; this.i = 0; this.berkas = berkas; }
 
@@ -171,7 +171,7 @@ class Parser {
     return { t: 'Program', isi };
   }
 
-  /** Baca kalimat sampai bertemu jenis penutup tertentu. */
+
   blok(penutup) {
     const isi = [];
     while (this.i < this.t.length && !penutup.includes(this.t[this.i].jenis)) {

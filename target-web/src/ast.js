@@ -1,8 +1,8 @@
 'use strict';
-// ===========================================================================
-// TAHAP 3 — AST (Abstract Syntax Tree)
-// Kumpulan pembuat simpul + peringkas untuk ditampilkan.
-// ===========================================================================
+
+
+
+
 
 const JENIS_SIMPUL = {
   Program: 'Akar program',
@@ -36,7 +36,7 @@ const JENIS_UNGKAPAN = {
   Kebenaran: 'nilai kebenaran', Benar: 'benar', Salah: 'salah',
 };
 
-/** Peringkas AST menjadi teks menjorok agar mudah dibaca manusia. */
+
 function ringkas(simpul, level = 0) {
   const j = '  '.repeat(level);
   if (!simpul || typeof simpul !== 'object') return j + String(simpul);

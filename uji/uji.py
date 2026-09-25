@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""Uji otomatis insJaY (compiler + runtime sendiri).
-
-Jalankan:  python3 uji/uji.py
-"""
-
 import json
 import os
 import subprocess
@@ -65,7 +59,6 @@ uji("lexing menghasilkan token", "BAB" in out and "LET" in out)
 out, _, _ = insjay(["ast", "contoh/kalkulator.Jay"])
 uji("AST terbentuk", "KEBIASAAN tambah" in out)
 
-# kompilasi -> bytecode -> jalankan
 tmp = tempfile.mkdtemp()
 bc = os.path.join(tmp, "fizz.Jayc")
 insjay(["kompilasi", "contoh/fizzbuzz.Jay", "-o", bc])
@@ -73,24 +66,20 @@ uji("kompilasi menghasilkan berkas .Jayc", os.path.exists(bc))
 out, _, _ = insjay(["jalankan", bc])
 uji("bytecode .Jayc dijalankan Mesin", "FizzBuzz" in out)
 
-# isi bytecode berisi opcode
 with open(bc) as f:
     data = json.load(f)
 uji("bytecode berisi instruksi + konstanta", "kode" in data and "konstanta" in data and data["versi"])
 
-# galat: wadah tak dikenal
 p1 = os.path.join(tmp, "g1.Jay")
 open(p1, "w").write("# Bab 1\naku berkata: wadah hantu.\n")
 out, err, kode = insjay(["periksa", p1])
 uji("galat wadah tak dikenal terdeteksi", kode != 0 and "belum pernah disiapkan" in err)
 
-# galat: kalimat ngawur
 p2 = os.path.join(tmp, "g2.Jay")
 open(p2, "w").write('# Bab 1\naku berkata: "hai".\nngawur total\n')
 out, err, kode = insjay(["jalankan", p2])
 uji("kalimat tidak koheren ditolak", kode != 0 and "tidak mengikuti alur cerita" in err)
 
-# web ditolak dengan pesan jelas
 p3 = os.path.join(tmp, "g3.Jay")
 open(p3, "w").write('# Bab 1\naku menyiapkan halaman bernama utama berjudul "Uji".\n')
 out, err, kode = insjay(["jalankan", p3])

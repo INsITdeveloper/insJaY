@@ -1,22 +1,7 @@
-# -*- coding: utf-8 -*-
-"""insJaY — TAHAP 5: KOMPILASI ke BYTECODE.
-
-AST -> bytecode untuk Mesin insJaY (runtime sendiri, tanpa Node/JS).
-
-Bentuk bytecode (JSON):
-{
-  "versi": "0.5.0",
-  "konstanta": [ ... ],
-  "fungsi": { "nama": {"params": [...], "kode": [ ... ]} },
-  "kode": [ {"op": "...", "arg": ...}, ... ]
-}
-"""
-
 from .lexer import GalatInsJay, JENIS_WEB
 
 VERSI_BYTECODE = "0.5.0"
 
-# Perintah yang hanya hidup di target web (JS), bukan di Mesin insJaY.
 PESAN_WEB = (
     "Perintah 'halaman' hanya hidup di target web (cli-node), "
     "bukan di Mesin insJaY. Gunakan mesin JS/web untuk web app."
@@ -27,7 +12,6 @@ PESAN_MODUL = (
     "(akar, pangkat, bulat, lantai, acak, waktu_sekarang)."
 )
 
-# Peta jenis kalimat web -> pesan galat yang enak dibaca
 
 
 class Kompilator:
@@ -36,7 +20,6 @@ class Kompilator:
         self.peta = {}
         self.fungsi = {}
 
-    # -- utilitas -------------------------------------------------------------
     def k(self, v):
         kunci = (type(v).__name__, v)
         if kunci in self.peta:
@@ -53,7 +36,6 @@ class Kompilator:
             out.append({"op": op, "arg": arg})
         return len(out) - 1
 
-    # -- ungkapan -------------------------------------------------------------
     def kompil_ungkapan(self, node, out):
         t = node["t"]
         if t in ("Angka", "Teks"):
@@ -105,7 +87,6 @@ class Kompilator:
         else:
             raise GalatInsJay("Ungkapan '%s' belum bisa dikompilasi." % t)
 
-    # -- kalimat --------------------------------------------------------------
     def kompil_kalimat(self, node, out):
         t = node["t"]
         if t == "Bab":

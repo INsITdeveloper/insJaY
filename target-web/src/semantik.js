@@ -1,15 +1,15 @@
 'use strict';
-// ===========================================================================
-// TAHAP 4 — PENGANALISIS SEMANTIK
-// Memeriksa makna: wadah dipakai sebelum disiapkan, kebiasaan ada/tidak,
-// jumlah isian cocok, 'mengembalikan' hanya di dalam kebiasaan, dsb.
-// ===========================================================================
+
+
+
+
+
 
 class Penganalisis {
   constructor() {
     this.diagnostik = [];
-    this.kerangka = [new Map()]; // tumpukan lingkup: Map(nama -> {simpul, dipakai})
-    this.fungsi = new Map();     // nama -> {jumlah, simpul, dipakai}
+    this.kerangka = [new Map()];
+    this.fungsi = new Map();
     this.dalamFungsi = 0;
     this.jumlahBab = 0;
     this.jumlahKalimat = 0;
@@ -22,7 +22,7 @@ class Penganalisis {
     this.diagnostik.push({ tingkat: 'peringatan', pesan, baris: simpul.baris, berkas: simpul.berkas });
   }
 
-  // -- pengelolaan lingkup --------------------------------------------------
+
   bawah() { return this.kerangka[this.kerangka.length - 1]; }
   dorong() { this.kerangka.push(new Map()); }
   tarik(simpul) {
@@ -32,7 +32,7 @@ class Penganalisis {
         this.peringatan(info.simpul, `Wadah '${nama}' disiapkan tetapi tidak pernah dipakai.`);
       }
     }
-    if (simpul) { /* placeholder */ }
+    if (simpul) {  }
   }
   deklare(nama, simpul) { this.bawah().set(nama, { simpul, dipakai: false }); }
   ada(nama) {
@@ -45,7 +45,7 @@ class Penganalisis {
     }
   }
 
-  // -- pemeriksaan ungkapan -------------------------------------------------
+
   periksaUngkapan(n, simpul) {
     if (!n) return;
     switch (n.t) {
@@ -83,7 +83,7 @@ class Penganalisis {
     }
   }
 
-  // -- penelusuran AST ------------------------------------------------------
+
   analisis(program) {
     for (const n of program.isi) this.kalimat(n);
     this.tarik(null);

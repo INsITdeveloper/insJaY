@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""insJaY — RUNTIME: Mesin Virtual (VM) sendiri.
-
-Menjalankan bytecode hasil kompilator insJaY. Mandiri: tidak butuh Node.js,
-npm, maupun mesin JavaScript mana pun.
-"""
-
 import math
 import random
 from datetime import datetime
@@ -29,7 +22,6 @@ def ke_bool(v):
 
 
 class Mesin:
-    """Mesin virtual insJaY (stack machine)."""
 
     def __init__(self, bytecode, masukan=None, keluaran=print):
         self.konstanta = bytecode["konstanta"]
@@ -41,7 +33,6 @@ class Mesin:
         self.nilai = []
         self.bawaan = self._pustaka()
 
-    # -- pustaka bawaan (standard library sendiri) ---------------------------
     def _pustaka(self):
         return {
             "akar": lambda a: math.sqrt(a[0]),
@@ -52,7 +43,6 @@ class Mesin:
             "waktu_sekarang": lambda a: datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         }
 
-    # -- bantu ---------------------------------------------------------------
     def _cari(self, frame, nama):
         f = frame
         while f is not None:
@@ -138,7 +128,6 @@ class Mesin:
             return self._banding(a, b, op)
         raise GalatInsJay("Operasi '%s' tidak dikenal." % op)
 
-    # -- eksekusi ------------------------------------------------------------
     def jalankan(self):
         utama = {"kode": self.kode, "pc": 0, "lokal": self.global_, "induk": None}
         tumpukan = [utama]

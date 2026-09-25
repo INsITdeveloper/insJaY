@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-"""insJaY — pipeline lengkap.
-
-    Lexing -> Parsing -> AST -> Penganalisis Semantik -> Kompilasi (bytecode)
-
-Lalu bytecode dijalankan oleh Mesin insJaY (runtime sendiri).
-"""
-
 import json
 import os
 
@@ -27,7 +19,6 @@ def baca_ast(berkas):
 
 
 def selesaikan_impor(daftar, folder, dimuat):
-    """Gabungkan semua 'menyambung cerita' menjadi satu AST datar."""
     hasil = []
     for n in daftar:
         if n["t"] == "Sambung":
@@ -46,7 +37,6 @@ def selesaikan_impor(daftar, folder, dimuat):
 
 
 def proses(berkas):
-    """Jalankan seluruh pipeline untuk berkas .Jay."""
     p = os.path.abspath(berkas)
     tokens, ast = baca_ast(p)
     datar = selesaikan_impor(ast["isi"], os.path.dirname(p), {p})

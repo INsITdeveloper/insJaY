@@ -1,12 +1,5 @@
-# -*- coding: utf-8 -*-
-"""insJaY — TAHAP 2 & 3: PARSING dan AST.
-
-Token kalimat -> AST. Termasuk parser ungkapan dan parser kondisi.
-"""
-
 from .lexer import GalatInsJay, lex_ungkapan, pisah_argumen
 
-# Frasa perbandingan -> kode operasi bytecode (terpanjang lebih dahulu).
 PERBANDINGAN = [
     ("tidak sama dengan", "!="),
     ("lebih besar atau sama dengan", ">="),
@@ -18,7 +11,6 @@ PERBANDINGAN = [
 
 
 def find_top_level(s, phrase):
-    """Cari frasa hanya di kedalaman teratas (di luar kutipan/kurung)."""
     depth = 0
     in_str = False
     i = 0
@@ -37,9 +29,6 @@ def find_top_level(s, phrase):
     return -1
 
 
-# ---------------------------------------------------------------------------
-# Parser ungkapan
-# ---------------------------------------------------------------------------
 class ParserUngkapan:
     def __init__(self, toks, berkas):
         self.t = toks
@@ -182,9 +171,6 @@ def parse_kondisi(teks, berkas=None):
     return {"t": "Kebenaran", "expr": parse_ungkapan(s, berkas)}
 
 
-# ---------------------------------------------------------------------------
-# Parser kalimat
-# ---------------------------------------------------------------------------
 class Parser:
     def __init__(self, tokens, berkas=None):
         self.t = tokens

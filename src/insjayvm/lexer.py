@@ -1,15 +1,7 @@
-# -*- coding: utf-8 -*-
-"""insJaY — TAHAP 1: LEXING.
-
-Mengubah teks .Jay menjadi deretan token kalimat, ditambah lexer untuk
-ungkapan (ekspresi).
-"""
-
 import re
 
 
 class GalatInsJay(Exception):
-    """Kesalahan bahasa dengan lokasi baris/berkas."""
 
     def __init__(self, pesan, baris=None, berkas=None, potongan=None):
         super().__init__(pesan)
@@ -27,7 +19,6 @@ class GalatInsJay(Exception):
         return "%s%s%s" % (self.pesan, ekor, petunjuk)
 
 
-# Urutan penting: pola yang lebih khusus lebih dahulu.
 POLA = [
     ("LET", re.compile(r"^aku\s+menyiapkan\s+wadah\s+bernama\s+(\w+)\s+yang\s+berisi\s+(.+)$", re.I)),
     ("SET", re.compile(r"^aku\s+mengganti\s+isi\s+wadah\s+(\w+)\s+menjadi\s+(.+)$", re.I)),
@@ -43,7 +34,6 @@ POLA = [
     ("KEMBALI", re.compile(r"^aku\s+mengembalikan\s+(.+)$", re.I)),
     ("SAMBUNG", re.compile(r'^aku\s+menyambung\s+cerita\s+dari\s+"(.+)"$', re.I)),
     ("TANYA", re.compile(r"^aku\s+bertanya:\s*(.+?)\s+ke\s+dalam\s+wadah\s+(\w+)$", re.I)),
-    # Perintah web (hanya untuk target JS/web; VM menolaknya dengan pesan jelas)
     ("HALAMAN", re.compile(r"^aku\s+menyiapkan\s+halaman\s+bernama\s+(\w+)\s+berjudul\s+(.+)$", re.I)),
     ("JUDUL", re.compile(r"^aku\s+menaruh\s+judul\s+(.+?)\s+ke\s+dalam\s+halaman\s+(\w+)$", re.I)),
     ("PARAGRAF", re.compile(r"^aku\s+menaruh\s+paragraf\s+(.+?)\s+ke\s+dalam\s+halaman\s+(\w+)$", re.I)),
@@ -52,7 +42,6 @@ POLA = [
     ("JAWABAN", re.compile(r"^aku\s+menaruh\s+jawaban\s+(.+?)\s+ke\s+dalam\s+halaman\s+(\w+)$", re.I)),
     ("GANTI_JAWABAN", re.compile(r"^aku\s+mengubah\s+jawaban\s+di\s+halaman\s+(\w+)\s+menjadi\s+(.+)$", re.I)),
     ("BACA_ISIAN", re.compile(r"^aku\s+membaca\s+kotak\s+isian\s+(\w+)\s+ke\s+dalam\s+wadah\s+(\w+)$", re.I)),
-    # Modul luar (hanya untuk target JS)
     ("AMBIL", re.compile(r'^aku\s+mengambil\s+dari\s+"(.+)"\s+ke\s+dalam\s+wadah\s+(\w+)$', re.I)),
     ("SERAHKAN", re.compile(r"^aku\s+menyerahkan\s+kebiasaan\s+(\w+)\s+kepada\s+dunia$", re.I)),
 ]
@@ -64,7 +53,6 @@ JENIS_WEB = frozenset([
 
 
 def lex(teks, berkas=None):
-    """TAHAP LEXING utama: teks -> daftar token kalimat."""
     token = []
     for i, mentah in enumerate(teks.split("\n"), 1):
         t = mentah.strip()
@@ -89,9 +77,6 @@ def lex(teks, berkas=None):
     return token
 
 
-# ---------------------------------------------------------------------------
-# Lexer ungkapan
-# ---------------------------------------------------------------------------
 FRASA_PANJANG = "panjang dari wadah"
 FRASA_KEWADAH = "angka dari wadah"
 FRASA_HURUFKECIL = "huruf kecil dari wadah"
@@ -101,7 +86,6 @@ FRASA_PANGGIL = "hasil dari kebiasaan"
 
 
 def lex_ungkapan(s, berkas=None):
-    """Ubah ungkapan menjadi token."""
     toks = []
     i = 0
     n = len(s)
@@ -187,7 +171,6 @@ def lex_ungkapan(s, berkas=None):
 
 
 def pisah_argumen(teks):
-    """Pisahkan argumen pada koma di kedalaman teratas."""
     hasil = []
     depth = 0
     in_str = False

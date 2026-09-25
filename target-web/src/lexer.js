@@ -1,10 +1,10 @@
 'use strict';
-// ===========================================================================
-// TAHAP 1 — LEXING
-// Mengubah teks .Jay menjadi deretan token kalimat, plus lexer untuk ungkapan.
-// ===========================================================================
 
-/** Kesalahan bahasa dengan lokasi. */
+
+
+
+
+
 class GalatInsJay extends Error {
   constructor(pesan, baris, berkas, potongan) {
     super(pesan);
@@ -22,7 +22,7 @@ class GalatInsJay extends Error {
   }
 }
 
-// Pola kalimat yang sah. URUTAN PENTING: yang lebih khusus lebih dahulu.
+
 const POLA = [
   ['LET', /^aku\s+menyiapkan\s+wadah\s+bernama\s+(\w+)\s+yang\s+berisi\s+(.+)$/i],
   ['SET', /^aku\s+mengganti\s+isi\s+wadah\s+(\w+)\s+menjadi\s+(.+)$/i],
@@ -46,12 +46,12 @@ const POLA = [
   ['JAWABAN', /^aku\s+menaruh\s+jawaban\s+(.+?)\s+ke\s+dalam\s+halaman\s+(\w+)$/i],
   ['GANTI_JAWABAN', /^aku\s+mengubah\s+jawaban\s+di\s+halaman\s+(\w+)\s+menjadi\s+(.+)$/i],
   ['BACA_ISIAN', /^aku\s+membaca\s+kotak\s+isian\s+(\w+)\s+ke\s+dalam\s+wadah\s+(\w+)$/i],
-  // --- v0.4: impor modul & ekspor fungsi (jembatan ke Node/npm) ---
+
   ['AMBIL', /^aku\s+mengambil\s+dari\s+"(.+)"\s+ke\s+dalam\s+wadah\s+(\w+)$/i],
   ['SERAHKAN', /^aku\s+menyerahkan\s+kebiasaan\s+(\w+)\s+kepada\s+dunia$/i],
 ];
 
-/** Tahap Lexing utama: teks -> daftar token kalimat. */
+
 function lex(teks, berkas) {
   const token = [];
   const barisSemua = teks.split(/\r?\n/);
@@ -84,9 +84,9 @@ function lex(teks, berkas) {
   return token;
 }
 
-// ---------------------------------------------------------------------------
-// Lexer ungkapan
-// ---------------------------------------------------------------------------
+
+
+
 const FRASA = {
   PANJANG: 'panjang dari wadah',
   KEWADAH: 'angka dari wadah',
@@ -163,7 +163,7 @@ function lexUngkapan(s, berkas) {
   return toks;
 }
 
-/** Pisah argumen pada koma di kedalaman teratas. */
+
 function pisahArgumen(teks) {
   const hasil = [];
   let depth = 0, inStr = false, buf = '';

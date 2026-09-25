@@ -1,13 +1,4 @@
-# -*- coding: utf-8 -*-
-"""insJaY — TAHAP 4: PENGANALISIS SEMANTIK.
-
-Memeriksa makna: wadah dipakai sebelum disiapkan, kebiasaan ada/tidak,
-jumlah isian cocok, 'mengembalikan' hanya di dalam kebiasaan, dsb.
-"""
-
-
 class Penganalisis:
-    # Kebiasaan bawaan dari pustaka Mesin insJaY (tidak perlu dibuat dulu).
     BAWAAN = {
         "akar": 1, "pangkat": 2, "bulat": 1, "lantai": 1, "acak": 0,
         "waktu_sekarang": 0,
@@ -15,8 +6,8 @@ class Penganalisis:
 
     def __init__(self):
         self.diagnostik = []
-        self.kerangka = [{}]      # tumpukan lingkup: nama -> {"simpul","dipakai"}
-        self.fungsi = {}          # nama -> {"jumlah","simpul","dipakai"}
+        self.kerangka = [{}]
+        self.fungsi = {}
         self.dalam_fungsi = 0
         self.jumlah_bab = 0
         self.jumlah_kalimat = 0
@@ -29,7 +20,6 @@ class Penganalisis:
         self.diagnostik.append({"tingkat": "peringatan", "pesan": pesan,
                                 "baris": n.get("baris"), "berkas": n.get("berkas")})
 
-    # -- lingkup --------------------------------------------------------------
     def bawah(self):
         return self.kerangka[-1]
 
@@ -54,7 +44,6 @@ class Penganalisis:
                 f[nama]["dipakai"] = True
                 return
 
-    # -- ungkapan -------------------------------------------------------------
     def periksa_ungkapan(self, n, asal):
         if n is None:
             return
@@ -96,7 +85,6 @@ class Penganalisis:
             self.galat(asal, "Kebiasaan '%s' menerima %d isian, tetapi diberi %d."
                        % (nama, f["jumlah"], jumlah_arg))
 
-    # -- penelusuran ----------------------------------------------------------
     def analisis(self, program):
         for n in program["isi"]:
             self.kalimat(n)

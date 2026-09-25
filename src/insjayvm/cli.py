@@ -1,16 +1,3 @@
-# -*- coding: utf-8 -*-
-"""insJaY — antarmuka baris perintah (`insjay`).
-
-    insjay <berkas>                jalankan cerita (.Jay) atau bytecode (.Jayc)
-    insjay jalankan <berkas>       jalankan
-    insjay kompilasi <berkas>      kompilasi ke bytecode .Jayc
-    insjay periksa <berkas>        analisis semantik
-    insjay ast <berkas>            tampilkan pohon AST
-    insjay lex <berkas>            tampilkan token hasil lexing
-    insjay bytecode <berkas>       tampilkan bytecode
-    insjay versi | bantuan
-"""
-
 import json
 import os
 import sys
@@ -79,9 +66,6 @@ def laporkan(diagnostik):
     return bersih
 
 
-# ---------------------------------------------------------------------------
-# peringkas AST
-# ---------------------------------------------------------------------------
 def _u(n):
     t = n["t"]
     if t == "Angka":
@@ -163,9 +147,6 @@ def ringkas(n, level=0):
     return "%s%s" % (j, t)
 
 
-# ---------------------------------------------------------------------------
-# perintah
-# ---------------------------------------------------------------------------
 def ambil_opsi(argv):
     sisa, keluaran = [], None
     i = 0

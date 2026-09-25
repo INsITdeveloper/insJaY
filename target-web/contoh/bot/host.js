@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 'use strict';
-// ===========================================================================
-// Host WhatsApp untuk bot insJaY
-// ---------------------------------------------------------------------------
-// Bot-nya sendiri ditulis dalam .Jay. Berkas ini hanya "jembatan": ia
-// menyambung ke WhatsApp lalu memanggil kebiasaan 'balas' milik bot.
-//
-// MODE DEMO (tanpa WhatsApp, untuk mencoba logika):
-//     node host.js bot.js
-//
-// MODE WHATSAPP (sungguhan; butuh paket Baileys):
-//     npm install @whiskeysockets/baileys
-//     node host.js bot.js --whatsapp
-// ===========================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const fs = require('fs');
 const path = require('path');
